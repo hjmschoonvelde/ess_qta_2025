@@ -26,14 +26,14 @@ To facilitate communication and interaction throughout the course we will make u
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
 | July  9   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md ) [.Rmd]( Lab_sessions/Day_1/Lab_Session_QTA_1.Rmd )  | [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.md ) [.Rmd]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.Rmd ) |
-| July  10   | [.md](  ) [.Rmd](  )  | [.md](  ) [.Rmd](  ) |
-| July  11   | [.md](  ) [.Rmd](  )  | [.md](  ) [.Rmd]( ) |
-| July  12   | [.md](  ) [.Rmd](  )  | [.md](  ) [.Rmd](  ) |
-| July  15   | [.md](  ) [.Rmd](  )  | [.md]( ) [.Rmd](  ) |
-| July  16   | [.md](  ) [.Rmd](  )  | [.md](  ) [.Rmd]( ) |
-| July  17   | [.md]( ) [.Rmd](  )  | [.md](  ) [.Rmd](  ) |
-| July  18   | [.md](  ) [.Rmd](  )  | [.md](  ) [.Rmd](  ) |
-| July  19   | [.md](  ) [.Rmd](  )  | [.md](  ) [.Rmd]( ) |
+| July  10   | [](  ) [](  )  | [](  ) []( ) |
+| July  11   | [](  ) [](  )  | [](  ) []( ) |
+| July  12   | [](  ) [](  )  | [](  ) []( ) |
+| July  15   | [](  ) [](  )  | [](  ) []( ) |
+| July  16   | [](  ) [](  )  | [](  ) []( ) |
+| July  17   | []( )  [](  )  | [](  ) []( ) |
+| July  18   | [](  ) [](  )  | [](  ) []( ) |
+| July  19   | [](  ) [](  )  | [](  ) []( ) |
 
 <!-- ## Flash talks
 
