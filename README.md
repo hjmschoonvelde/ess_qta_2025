@@ -8,13 +8,13 @@ You can find the syllabus [here](Syllabus_QTA.pdf).
 
 ## Communication
 
-To facilitate communication and interaction throughout the course we will make use of a dedicated [Slack channel](https://essqta24.slack.com).
+To facilitate communication and interaction throughout the course we will make use of a dedicated [Slack channel](https://essqta25.slack.com).
 
 ## Slides
 
 | Date        | Slides           |  Date        | Slides           |
 | ------------- |:-------------:| ------------- |:-------------:|
-| July  7   | [.pdf](Slides/Slides_QTA_1.pdf)| July  14   |  |
+| July  7   | [.pdf]()| July  14   |  |
 | July  8   | | July  15   |  |
 | July  9   | | July 16  |  |
 | July  10  | | July  17   | |
@@ -25,7 +25,7 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
-| July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md ) [.Rmd]( Lab_sessions/Day_1/Lab_Session_QTA_1.Rmd )  | [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.md ) [.Rmd]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.Rmd ) |
+| July  7   |  [.md]( ) [.Rmd](  )  | [.md](  ) [.Rmd]( ) |
 | July  8   | [](  ) [](  )  | [](  ) []( ) |
 | July  9   | [](  ) [](  )  | [](  ) []( ) |
 | July  10   | [](  ) [](  )  | [](  ) []( ) |
@@ -138,8 +138,8 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
 - **Readings**:
-   - Laurer, M., Van Atteveldt, W., Casas, A. & Welbers, K., (2024). Less annotating, more classifying: Addressing the data scarcity issue of supervised machine learning with deep transfer learning and BERT-NLI. Political Analysis, 32(1), pp. 84–100.
-- Kroon, A., Welbers, K., Trilling, D., & van Atteveldt, W. (2024). Advancing automated content analysis for a new era of media eﬀects research: The key role of transfer learning. Communication Methods and Measures, 18(2), pp. 142–162.
+  - Laurer, M., Van Atteveldt, W., Casas, A. & Welbers, K., (2024). Less annotating, more classifying: Addressing the data scarcity issue of supervised machine learning with deep transfer learning and BERT-NLI. Political Analysis, 32(1), pp. 84–100.
+  - Kroon, A., Welbers, K., Trilling, D., & van Atteveldt, W. (2024). Advancing automated content analysis for a new era of media eﬀects research: The key role of transfer learning. Communication Methods and Measures, 18(2), pp. 142–162.
 
 *Day 10 - July 18*
 
