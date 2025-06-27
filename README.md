@@ -122,8 +122,8 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Latent Dirichlet Allocation (LDA) and Structural topics models (STM).
 
 - **Readings**:
- - Roberts, M et al. (2014). Structural topic models for open-ended survey responses. American Journal of Political Science, 58(4), 1064–1082.
- - Grimmer, J.., Roberts, M.E., and Stewart, B.M. (2022). Text as Data: A New Framework for Machine Learning and the Social Sciences. Princeton: Princeton University Press: chapter 13.
+  - Roberts, M et al. (2014). Structural topic models for open-ended survey responses. American Journal of Political Science, 58(4), 1064–1082.
+  - Grimmer, J.., Roberts, M.E., and Stewart, B.M. (2022). Text as Data: A New Framework for Machine Learning and the Social Sciences. Princeton: Princeton University Press: chapter 13.
 
 *Day 8 - July 16*
 
