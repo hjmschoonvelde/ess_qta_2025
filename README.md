@@ -56,6 +56,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -  **Lab**: Working in RStudio. Working with libraries in R. Working with Quarto / RMarkdown. 
 
 - **Readings**
+
   - Benoit, K.R. (2020). Text as Data: An Overview. Handbook of Research Methods in Political Science and International Relations. Ed. by L. Curini and R. Franzese. Thousand Oaks: Sage: pp. 461–497.
   - Grimmer, J., Roberts, M.E., and Stewart, B.M. (2022). Text as Data: A New Framework for Machine Learning and the Social Sciences. Princeton: Princeton University Press: chapter 4.
 
@@ -66,7 +67,8 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Working with strings variables. Regular expressions. Cleaning a string vector. Creating a document-feature matrix. 
 
 - **Readings**:
-  -  Benoit, K., Watanabe, K., Wang, H, Nulty, P., Obeng, A., Müller, & Matsuo, A. (2018). Quanteda: An R package for the quantitative analysis of textual data. Journal of Open Source Software, 3(30), 774.
+
+  - Benoit, K., Watanabe, K., Wang, H, Nulty, P., Obeng, A., Müller, & Matsuo, A. (2018). Quanteda: An R package for the quantitative analysis of textual data. Journal of Open Source Software, 3(30), 774.
   - Baden, C., Pipal, C., Schoonvelde, M. & van der Velden, M.A.C.G., (2022). Three Gaps in Computational Text Analysis Methods for Social Sciences: A Research Agenda. Communication Methods and Measures, 16(1): pp. 1–18.
 
 *Day 3 - July 9*
@@ -76,7 +78,8 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Importing textual data into R. Introduction to **quanteda** (Benoit _et al._, 2018). Inspecting and visualizing a corpus. 
 
 - **Readings**:
-  -  Grimmer, J ., Roberts, M.E., and Stewart, B.M. (2022). Text as Data: A New Framework for Machine Learning and the Social Sciences. Princeton: Princeton University Press: chapter 8.
+
+  - Grimmer, J ., Roberts, M.E., and Stewart, B.M. (2022). Text as Data: A New Framework for Machine Learning and the Social Sciences. Princeton: Princeton University Press: chapter 8.
   - Rodriguez, P.L. and Spirling, A., (2022). Word embeddings: What works, what doesn't, and how to tell the difference for applied research. The Journal of Politics, 84(1): pp.101–115.
   
 *Day 4 - July 10*
@@ -86,6 +89,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Categorizing texts using off-the-shelf and home-made dictionaries. 
 
 - **Readings**
+
   - Grimmer, J., Roberts, M.E., and Stewart, B.M. (2022). Text as Data: A New Framework for Machine Learning and the Social Sciences. Princeton: Princeton University Press: chapter 16.
   - Rauh, C., (2018). Validating a sentiment dictionary for German political language–a workbench note. Journal of Information Technology & Politics, 15(4): pp.319–343.
 
@@ -96,6 +100,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Binary classification of documents using a simple classifier.
 
 - **Readings**:
+
   - Daniel Jurafsky and James H. Martin (2020). Speech and Language Processing: An Introduc- tion to Natural Language Processing, Computational Linguistics, and Speech Recognition. 3rd edition: Chapter 4
   - Gilardi, F., Alizadeh, M., & Kubli, M. (2023). “ChatGPT Outperforms Crowd-Workers for Text-Annotation Tasks”. Proceedings of the National Academy of Sciences of the United States of America 120 (3): e2305016120.
 
@@ -145,7 +150,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 -	**Lecture**: LLMs. Concluding remarks 
 
--	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
+-	**Lab**: Practice with LLMs using the **rollama** package (Gruber & Weber, 2024)
 
 - **Readings**:
    - Bail, C.A., (2024). Can Generative AI improve social science? Proceedings of the National Academy of Sciences, 121(21) p.e2314021121.
