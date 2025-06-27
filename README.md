@@ -138,20 +138,18 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
 - **Readings**:
-   - Chan, C.H., (2023). grafzahl: fine-tuning Transformers for text data from within R. Computational Communication Research, 5(1) p.76–84.
-   - Laurer, M., Van Atteveldt, W., Casas, A. & Welbers, K., (2024). Less annotating, more classifying: Addressing the data scarcity issue of supervised machine learning with deep transfer learning and BERT-NLI. Political Analysis, 32(1) pp. 84–100.
-   - Bail, C.A., (2024). Can Generative AI improve social science? Proceedings of the National Academy of Sciences, 121(21) p.e2314021121.
-
+   - Laurer, M., Van Atteveldt, W., Casas, A. & Welbers, K., (2024). Less annotating, more classifying: Addressing the data scarcity issue of supervised machine learning with deep transfer learning and BERT-NLI. Political Analysis, 32(1), pp. 84–100.
+- Kroon, A., Welbers, K., Trilling, D., & van Atteveldt, W. (2024). Advancing automated content analysis for a new era of media eﬀects research: The key role of transfer learning. Communication Methods and Measures, 18(2), pp. 142–162.
 
 *Day 10 - July 18*
 
--	**Lecture**: Deep learning. Transfer Learning. LLMs. Concluding remarks 
+-	**Lecture**: LLMs. Concluding remarks 
 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
 - **Readings**:
-   - Chan, C.H., (2023). grafzahl: fine-tuning Transformers for text data from within R. Computational Communication Research, 5(1) p.76–84.
-   - Laurer, M., Van Atteveldt, W., Casas, A. & Welbers, K., (2024). Less annotating, more classifying: Addressing the data scarcity issue of supervised machine learning with deep transfer learning and BERT-NLI. Political Analysis, 32(1) pp. 84–100.
    - Bail, C.A., (2024). Can Generative AI improve social science? Proceedings of the National Academy of Sciences, 121(21) p.e2314021121.
+   - Gruber, J.B. & Votta F. (2025). Large Language Models. In: Nai, A., Gr¨omping, M., & Wirz, D. (Eds). Elgar Encyclopedia of Political Communication. Edward Elgar Publishing.
+   - Laurer, M., van Atteveldt, W., Casas, A., & Welbers, K. (2025). On measurement validity and language models: Increasing validity and decreasing bias with instructions. Communication Methods and Measures 19(1), pp 46–62.
 
 
