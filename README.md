@@ -14,7 +14,7 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Slides           |  Date        | Slides           |
 | ------------- |:-------------:| ------------- |:-------------:|
-| July  7   | [.pdf]()| July  14   |  |
+| July  7   | []()| July  14   |  |
 | July  8   | | July  15   |  |
 | July  9   | | July 16  |  |
 | July  10  | | July  17   | |
@@ -25,7 +25,7 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
-| July  7   |  [.md]( ) [.Rmd](  )  | [.md](  ) [.Rmd]( ) |
+| July  7   |  []( ) [](  )  | [](  ) []( ) |
 | July  8   | [](  ) [](  )  | [](  ) []( ) |
 | July  9   | [](  ) [](  )  | [](  ) []( ) |
 | July  10   | [](  ) [](  )  | [](  ) []( ) |
