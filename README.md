@@ -53,7 +53,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
  - **Lecture**: What is quantitative text analysis? What will you learn in this course? Developing a corpus.
  
--  **Lab**: Working in RStudio. Working with libraries in R. Working with Quarto / RMarkdown. 
+-  **Lab**: Working in RStudio. Working with packages in R. Working with Quarto / RMarkdown. 
 
 - **Readings**
 
