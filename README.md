@@ -25,7 +25,7 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
-| July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md) [](  )  | [](  ) []( ) |
+| July  7   |  []( ) [](  )  | [](  ) []( ) |
 | July  8   | [](  ) [](  )  | [](  ) []( ) |
 | July  9   | [](  ) [](  )  | [](  ) []( ) |
 | July  10   | [](  ) [](  )  | [](  ) []( ) |
