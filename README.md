@@ -14,18 +14,18 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Slides           |  Date        | Slides           |
 | ------------- |:-------------:| ------------- |:-------------:|
-| July  7   | []()| July  14   |  |
+| July  7   | | July  14   |  |
 | July  8   | | July  15   |  |
 | July  9   | | July 16  |  |
 | July  10  | | July  17   | |
-| July  11  | |  | July 18 | |
+| July  11  | | July 18 | |
 
 
 ## Lab Sessions
 
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
-| July  7   |  []( ) [](  )  | [](  ) []( ) |
+| July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md) [](  )  | [](  ) []( ) |
 | July  8   | [](  ) [](  )  | [](  ) []( ) |
 | July  9   | [](  ) [](  )  | [](  ) []( ) |
 | July  10   | [](  ) [](  )  | [](  ) []( ) |
