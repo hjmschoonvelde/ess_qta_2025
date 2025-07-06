@@ -2,13 +2,17 @@
 
 This page contains the materials for the Essex Summer School 2025 course *Introduction to Quantitative Text Analysis*. Materials will be added as we go along.
 
-Instructor: [Martijn Schoonvelde](http://mschoonvelde.com)
+Instructor: [Martijn Schoonvelde](http://mschoonvelde.com). TA: [James K. Rice](https://jameskrice7.github.io/)
 
 You can find the syllabus [here](Syllabus_QTA.pdf).
 
 ## Communication
 
 To facilitate communication and interaction throughout the course we will make use of a dedicated [Slack channel](https://essqta25.slack.com).
+
+## R Crash course
+
+On the first day of the course we will have a short R crash course. Please contact James directly if you want to participate in this crash course. The crash course will be held on July 7th, 2025, at 2:30 - 4:00 PM (BST).
 
 ## Slides
 
