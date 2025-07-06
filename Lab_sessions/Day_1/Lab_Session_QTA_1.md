@@ -5,28 +5,42 @@
 
 In order to analyze text, we will use the `R` statistical language, a
 versatile tool for doing all sorts of analyses, whether it is
-statistical analysis, text analysis, or otherwise. Today we will
-practice using `R`. In this script, you will learn how to distinguish
-between different types of objects in `R`, how to create objects, and
-how to use functions to manipulate these objects.
+statistical analysis, text analysis, or otherwise.
 
-First, have a look at the image below. It shows the interface of a
-typical RStudio session. When typing in commands in R, you will use the
-`Console` panel. The `Script` panel can contain files with pre-written
-lines of code (for example in an R Markdown file), which you can
-copy-paste into the `Console`. The `Environment` panel displays objects
-that you created during your R session. The `output` panel displays
-function outputs such as figures.
+Today, you’ll get hands-on practice using R. You’ll learn how to create
+and manipulate different types of objects, and how to use functions to
+work with them. It will not be possible to cover everything in one
+session, but you will get acquainted with some basics. If you have never
+used R before, I strongly recommend you participate in the R crash
+course that James organizes this afternoon.
+
+To work with `R`, we will use `RStudio`, a graphical user interface
+(GUI) that makes coding in R easier and more organized. The RStudio
+interface is typically divided into four panels:
+
+- The Console panel (lower-left) is where you type and run your R
+  commands.
+
+- The Script panel (upper-left) is used to write and save code in
+  files—such as .R or .qmd files—which you can run line by line in the
+  Console.
+
+- The Environment panel shows the objects (like variables and datasets)
+  you’ve created during your R session.
+
+- The fourth panel, a Plots/Files/Help/Viewer panel, displays additional
+  outputs like plots, file directories, help documentation, and web
+  previews.
 
 <img src="rstudio_panels.png" style="width:65.0%"
 alt="Graphical interface in RStudio" />
 
-R can serve many different purposes. For instance, we can use R as a
+`R` can serve many different purposes. For instance, we can use R as a
 calculator. Give it a try by typing the following commands in the
 `Console`.
 
 **NB**: in these documents, you have to type in the commands appearing
-in the grey blocks (the blocks are so called `code snippets`). Within
+in the grey blocks (the blocks are so called `code blocks`). Within
 these code snippets, the `#` symbol is used to denote comments. Comments
 are not executed by `R`, but are there to help you understand what the
 code does. You can run the code in a line by pressing `Ctrl + Enter` or
@@ -71,35 +85,56 @@ for more on `R` as a calculator.
 
 You can also do conduct more advanced operations, such as taking the
 mean of two numbers, or finding the median of three numbers. For this we
-use the `mean()` function, and the `median()` function respectively. R
-contains a lot of functions like this. Functions in `R` are denoted with
-round brackets What’s in between the round brackets is the argument (or
-the arguments) that the function is being applied to. When using a
+use the `mean()` function, and the `median()` function respectively.
+
+`R` contains a lot of functions like this. Functions in `R` are denoted
+with parentheses (). What’s goes in these parentheses is the argument
+(or the arguments) that the function is being applied to. When using a
 function, you have to make sure that the arguments are of the right
 type. For example, the `mean()` function requires a numerical argument.
 
-``` r
-#take the mean of 2 and 4
-
-mean(2,4)
-```
-
-    [1] 2
-
-``` r
-#take the median (the middle value) of 2, 4 and 100
-
-median(2, 4, 100)
-```
-
-    [1] 2
-
 We can also create a so-called `vector` of numbers using the `c()`
 function (which stands for concatenate). A vector is just a row of
-observations. For example, `c(2,4)` is just a vector of numbers 2 and 4.
+observations of the same data type.
+
+For example, `c(2,4)` is just a vector of numbers 2 and 4.
 `c("A", "B", "F")` is a vector of three capitalized letters.
 `c("John", "Paul", "George", "Ringo")` is a vector with the first names
 of the Beatles. And so on.
+
+In `R`, data can come in different types, and it’s important to
+understand these types because they determine what kind of operations
+you can perform. The most common data types include:
+
+- **Numeric**: These are real numbers, such as 3.14, -7, or 100. Most
+  numbers in `R` default to this type.
+
+- **Integer**: Whole numbers (without decimals), like 1, 42, or -10. You
+  can explicitly create them using the L suffix (e.g., 10L).
+
+- **Factor**: Categorical data, which can be ordered or unordered. For
+  example, “low”, “medium”, “high” or “red”, “green”, “blue”. Factors
+  are useful for statistical modeling and plotting.
+
+- **Character**: These are text values, also called strings, such as
+  “apple”, “EU policy”, or “2025”.
+
+- **Logical**: These represent boolean values: TRUE or FALSE. They’re
+  often used in comparisons or filtering.
+
+- **Date**: R has a special data type to represent calendar dates (e.g.,
+  as.Date(“2025-07-05”)).
+
+Functions in R often expect certain types as input. You can check the
+type of any object using the `class()` or `typeof()` functions.
+
+The functions we use in `R` can only be applied to certain types of
+data.For example, the `mean()` function can only be applied to numerical
+data, while the `str_to_upper()` function from the `stringr` library can
+only be applied to character data.
+
+Knowing the type helps you avoid errors and better understand how your
+data behaves.
 
 ``` r
 #take the mean of 2 and 4
@@ -115,9 +150,11 @@ median(c(2, 4, 100))
 
     [1] 4
 
-We can create objects in `R` using the assign operator (`<-`). For
-example, let’s create an object `x` which in fact is a vector of the
-numbers 2, 3 and 10:
+We can create objects in `R` using the assignment operator (`<-`). For
+example, let’s create an object `x` which is a vector of the numbers 2,
+3 and 10. On a Windows computer, the shortcut for the assignment
+operator is `Ctrl + Alt + -` (the minus sign), while on a Mac it is
+`Option + -`.
 
 ``` r
 x <- c(2,3,10)
@@ -131,16 +168,14 @@ mean(x)
 
     [1] 5
 
-Check the `Environment` pane. It now contains the object `x` and you can
-use it for all kinds of operations.
+Check the `Environment` panel. It now contains the object `x` and you
+can use it for all kinds of operations.
 
 We can also create an object called Beatles with the first names of the
 Beatles members.
 
 ``` r
 beatles <- c("John", "Paul", "George", "Ringo")
-
-newspaper_articles <- c("text article 1", "text article 2", "text article 3", "text article 4")
 ```
 
 What happens if we take the mean of the beatles object?
@@ -176,9 +211,8 @@ function.
 ```
 
 This will throw an error saying that the function `squareroot` is not
-found. This is because the function is called `sqrt` in `R`.
-squareroot() does not exist, unless we define it ourselves. Rather the
-function is called sqrt().
+found. This is because the function `squareroot` does not exist, unless
+we define it ourselves. In base R, the function is called `sqrt`.
 
 ``` r
 sqrt(x)
@@ -237,10 +271,16 @@ can load the library using the `library()` function. In order to use the
 front of the function.
 
 ``` r
-#install.packages(quanteda)
-#install.packages(stringr)
-#install.packages(ggplot2)
+#install.packages("quanteda")
+#install.packages("stringr")
+#install.packages("ggplot2")
 ```
+
+Let’s load the packages we need. You can do this by typing in the
+`library()` function with the name of the package you want to load.
+
+Keep in mind that you need to **install the packages only once**, but
+you need to **load them every time you start a new `R` session**.
 
 ``` r
 library(quanteda)
@@ -248,21 +288,20 @@ library(stringr)
 library(ggplot2)
 ```
 
-## Text as strings
+## Text as (character) data
 
-So what this have to do with quantitative text analysis?
+**So what this have to do with quantitative text analysis?**
 
 Well, text can be read into `R` as a character object or character
 vector, which we can examine using various functions available to us in
-the various libraries.
+the various packages.
 
 But before we get to that, let’s keep things simple first. Let’s say we
-have a `vector` with European Commissioners. Let’s call this string
-`commissioners`.
+have a `vector` with recent European Commissioners. Let’s call this
+string `commissioners`.
 
 ``` r
 # Define the vector with the names of European Commissioners
-
 
 commissioners <- c(
   "Ursula von der Leyen", "Wopke Hoekstra", "Margrethe Vestager", 
@@ -280,10 +319,10 @@ print(commissioners)
     [10] "Thierry Breton"      
 
 To access individual Commissioners in this `commissioners` vector, we
-can use the square brackets. For example, if we type in
-`commissioners[1]`, `R` will return the content of first element of
-`commissioners`, if we type in `comissioners[5],`R\` will return the 5th
-element of commissioners. Just try it out.
+can use square brackets. For example, if we type in `commissioners[1]`,
+`R` will return the content of first element of `commissioners`, if we
+type in `commissioners[5],`R\` will return the 5th element of
+commissioners. Just try it out.
 
 ``` r
 commissioners[1]
@@ -297,18 +336,10 @@ commissioners[5]
 
     [1] "Josep Borrell"
 
-Data in `R` can be of different `types` (`numeric`, `logical`,
-`character`, and `factor`). For example, a vector of numbers is an
-object of type `numeric`, and a vector of words like commissioners is of
-type `character` (it is a so-called character string), and we can also
-have logical vectors in which element is either `TRUE` or `FALSE`.
-
-Depending on the type of object you are dealing with, you can do
-different things in R. For example, if you want to multiply elements in
-a character string `R` will throw you an error, simply because, say, Von
-der Leyen times Hoekstra is a meaningless statement, whereas 2^3 (see
-above) is 8. We can check the type of an object using the class()
-function:
+Let’s inspect the type of the `commissioners` object. We can do this
+using the `class()` function, which tells us what type of object we are
+dealing with. In this case, we expect it to be a character vector, since
+it contains names of Commissioners:
 
 ``` r
 class(commissioners)
@@ -317,9 +348,9 @@ class(commissioners)
     [1] "character"
 
 When data is of type character, we can use the `stringr()` library for
-some useful functions. For example, in case we want to have the party
-names in all caps, we can use the `str_to_upper()` function from the
-`stringr` library
+some useful functions. For example, in for some reason we want to have
+the commissioner names in all caps, we can use the `str_to_upper()`
+function from the `stringr` library
 
 ``` r
 str_to_upper(commissioners)
@@ -389,8 +420,8 @@ str_detect(commissioners, "ll")
 
      [1] FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE FALSE
 
-**Question**: Write some code to detect whether the sequence `mm` in
-which of these party names the sequence `rr` occurs.
+**Question**: Write some code to detect whether the sequence `rr` occurs
+in any of the names in the `commissioners` vector.
 
 ``` r
 #your answer here
@@ -409,22 +440,23 @@ how it works.
 
 A different object in `R` is a so called dataframe. Dataframes are data
 displayed in tabular format. Dataframes can have different types of data
-inside them While the first column can be character, the second and
-third can be numeric or logical. This is different from other objects,
-such as a `matrix` which can only contain one particular object type.
+inside them, but they are all of the same length. For examople, while
+the first column can be character, the second and third can be numeric
+or logical. This is different from other objects, such as a `matrix`
+which can only contain one particular object type.
 
 In order to create a dataframe we can use the \`data.frame()’ function.
 
-Let’s the age of these commissioners. We’ll put this data in a numerical
-variable called polls
+Let’s take the age of these commissioners. We’ll put this data in a
+numerical variable called age.
 
 ``` r
-age <- c(65, 48, 56, 52, 77, 68, 65, 48, 68, 69)
+age <- c(66, 49, 57, 53, 78, 69, 66, 49, 69, 70)
 ```
 
 We can now use the data.frame() to create a dataframe, which we’ll call
-data. This dataframe has two variables: the name of the commissioner and
-their age.
+data. This dataframe has two variables: the name of the commissioner
+(`name_commissioner`) and their age (`age_commissioner`).
 
 ``` r
 data <- data.frame(name_commissioner = commissioners, 
@@ -433,24 +465,32 @@ print(data)
 ```
 
           name_commissioner age_commissioner
-    1  Ursula von der Leyen               65
-    2        Wopke Hoekstra               48
-    3    Margrethe Vestager               56
-    4    Valdis Dombrovskis               52
-    5         Josep Borrell               77
-    6     Stella Kyriakides               68
-    7       Didier Reynders               65
-    8      Jutta Urpilainen               48
-    9        Elisa Ferreira               68
-    10       Thierry Breton               69
+    1  Ursula von der Leyen               66
+    2        Wopke Hoekstra               49
+    3    Margrethe Vestager               57
+    4    Valdis Dombrovskis               53
+    5         Josep Borrell               78
+    6     Stella Kyriakides               69
+    7       Didier Reynders               66
+    8      Jutta Urpilainen               49
+    9        Elisa Ferreira               69
+    10       Thierry Breton               70
 
 Now that we have the data in this format, we can plot it. We’ll use the
-`ggplot2()` library to create a plot. Since we already loaded it in
-memory we can use its functions. Let’s create a bar plot using the
-`geom_bar()` function from ggplot.
+`ggplot()` function from the `ggplot2` package to create a plot (which
+is another object in `R`). Since we already loaded it in memory we can
+use its functions. Let’s create a bar plot using the `geom_bar()`
+function from ggplot.
+
+The following code creates a bar plot with the names of the
+commissioners on the x-axis and their ages on the y-axis. The
+`stat = "identity"` argument tells ggplot that we want to use the actual
+values in the data, rather than counting occurrences. The `aes()`
+function is used to specify the aesthetics of the plot, such as the x
+and y axes.
 
 NB: No worries if you don’t yet understand this syntax – this is a
-practice exercise
+practice exercise.
 
 ``` r
 plot <- ggplot(data = data, 
@@ -460,10 +500,13 @@ plot <- ggplot(data = data,
 print(plot)
 ```
 
-<img
-src="Lab_Session_QTA_1_files/figure-commonmark/unnamed-chunk-26-1.png" />
+![](Lab_Session_QTA_1_files/figure-commonmark/ggplot2_bar_plot-1.png)
 
-Let’s make this plot a bit nicer by adding a theme
+Let’s make this plot a bit nicer by adding a theme. The
+`theme_minimal()` function adds a minimal theme to the plot, which makes
+it look cleaner and more visually appealing. There are many different
+themes available in ggplot2, and you can choose the one that best fits
+your preferences.
 
 ``` r
 plot <- ggplot(data = data, aes(x = name_commissioner, 
@@ -473,8 +516,7 @@ plot <- ggplot(data = data, aes(x = name_commissioner,
 print(plot)
 ```
 
-<img
-src="Lab_Session_QTA_1_files/figure-commonmark/unnamed-chunk-27-1.png" />
+![](Lab_Session_QTA_1_files/figure-commonmark/ggplot2%20bar_plot_theme_minimal-1.png)
 
 We’ll make this plot even nicer by rotating the x-axis labels.
 
@@ -488,11 +530,11 @@ plot <- ggplot(data = data, aes(x = name_commissioner,
 print(plot)
 ```
 
-<img
-src="Lab_Session_QTA_1_files/figure-commonmark/unnamed-chunk-28-1.png" />
+![](Lab_Session_QTA_1_files/figure-commonmark/ggplot2%20bar_plot_theme_minimal_rotated-1.png)
 
 Now we will order the commissioners by age. We can do this by using the
-`reorder()` function.
+`reorder()` function. This function allows us to reorder the x-axis
+based on the values of the y-axis.
 
 ``` r
 plot <- ggplot(data = data, aes(x = reorder(name_commissioner, age_commissioner), 
@@ -504,11 +546,23 @@ plot <- ggplot(data = data, aes(x = reorder(name_commissioner, age_commissioner)
 print(plot)
 ```
 
-<img
-src="Lab_Session_QTA_1_files/figure-commonmark/unnamed-chunk-29-1.png" />
+![](Lab_Session_QTA_1_files/figure-commonmark/reorder_commissioners_by_age-1.png)
 
 **Question** How would you make this plot nicer? What aspects would you
 change?
+
+In a last step, we’ll save this plot as a PNG file. We can do this using
+the `ggsave()` function. This function saves the last plot created in
+the current R session to a file in the current working directory.
+
+``` r
+#| label: "ggsave"
+#| echo: true
+#| message: false
+#| warning: false
+
+ggsave("commissioners_plot.png", plot = plot, width = 10, height = 6)
+```
 
 ## Practice excercises
 

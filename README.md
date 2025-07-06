@@ -14,7 +14,7 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Slides           |  Date        | Slides           |
 | ------------- |:-------------:| ------------- |:-------------:|
-| July  7   | | July  14   |  |
+| July  7   | [.pdf]( Slides/Slides_QTA_1.pdf)| July  14   |  |
 | July  8   | | July  15   |  |
 | July  9   | | July 16  |  |
 | July  10  | | July  17   | |
@@ -25,7 +25,7 @@ To facilitate communication and interaction throughout the course we will make u
 
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
-| July  7   |  []( ) [](  )  | [](  ) []( ) |
+| July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md ) [.qmd]( Lab_sessions/Day_1/Lab_Session_QTA_1.qmd )  | [](  ) []( ) |
 | July  8   | [](  ) [](  )  | [](  ) []( ) |
 | July  9   | [](  ) [](  )  | [](  ) []( ) |
 | July  10   | [](  ) [](  )  | [](  ) []( ) |
@@ -138,7 +138,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 *Day 9 - July 17*
 
--	**Lecture**: Deep learning. Transfer Learning. LLMs. Concluding remarks 
+-	**Lecture**: Deep learning. Transfer Learning. Concluding remarks 
 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
