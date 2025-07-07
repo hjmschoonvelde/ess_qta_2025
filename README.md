@@ -16,7 +16,7 @@ On the first day of the course we will have a short R crash course. Please conta
 
 | Date        | Link           |
 | ------------- |:-------------:|
-| July  7   | [.qmd]( Crash_course/R_Crash_Course_for_Text_Analysis.qmd) [.md](Crash_course/R_Crash_Course_for_Text_Analysis.md)  |
+| July  7   | [.md](Crash_course/R_Crash_Course_for_Text_Analysis.md) [.qmd]( Crash_course/R_Crash_Course_for_Text_Analysis.qmd) |
 
 ## Slides
 
