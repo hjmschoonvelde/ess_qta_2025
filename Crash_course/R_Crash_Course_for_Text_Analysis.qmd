@@ -2,7 +2,7 @@
 title: "R Crash Course for Text Analysis"
 author: "James Rice"
 format: 
-  html:
+  gfm:
     toc: true
     toc-depth: 3
     code-fold: false
@@ -35,33 +35,31 @@ library(stringr)
 library(tidytext)
 ```
 
-
 This is a crash course in R with a focus on text analysis applications. It will give you an idea on how R works and introduce you to key concepts for analyzing textual data.
 
-# R and RStudio 
+# R and RStudio
 
 **R** is an open-source programming language for statistical computing and graphics, with exceptional capabilities for text analysis and natural language processing.
 
 Most of the functionalities of R come through *packages*, some of which are built-in within base R and many of which are community-provided (see [CRAN](http://www.cran.r-project.org) for add-on packages). For text analysis, key packages include `stringr`, `tidytext`, `tm`, `quanteda`, and `textdata`.
 
-**RStudio** is an integrated development environment, a user-friendly interface for us to work with R. To use it locally on your computer, you need to first [install R](http://www.cran.r-project.org) and then [RStudio](https://www.rstudio.com/products/rstudio/download/). 
+**RStudio** is an integrated development environment, a user-friendly interface for us to work with R. To use it locally on your computer, you need to first [install R](http://www.cran.r-project.org) and then [RStudio](https://www.rstudio.com/products/rstudio/download/).
 
 Both RStudio Desktop and RStudio Cloud has the same interface:
 
-1. A window to edit code scripts on top-left. 
-2. A window to see the execution and outputs of commands on bottom-left. 
-3. A window to see the *environment*: objects in temporary memory, on top-right. 
-4. A window with several tabs: file directory, plots, R packages, and help files, on bottom-right.
+1.  A window to edit code scripts on top-left.
+2.  A window to see the execution and outputs of commands on bottom-left.
+3.  A window to see the *environment*: objects in temporary memory, on top-right.
+4.  A window with several tabs: file directory, plots, R packages, and help files, on bottom-right.
 
 # Some basics before we start
 
-* Any text following a "#" is a comment and R ignores comments while executing the code
-  * You will see comments very often in R scripts: These can be explanations, for your colleagues or for your future-self! 
-  
-* R executes codes line by line. In RStudio, you can: 
-  * Click "Run" in the editor window.
-  * Select a bulk of code and click "Run" to execute several lines of code.
-  * Type and enter the code in the console.
+-   Any text following a "\#" is a comment and R ignores comments while executing the code
+    -   You will see comments very often in R scripts: These can be explanations, for your colleagues or for your future-self!
+-   R executes codes line by line. In RStudio, you can:
+    -   Click "Run" in the editor window.
+    -   Select a bulk of code and click "Run" to execute several lines of code.
+    -   Type and enter the code in the console.
 
 # Basic operations in R
 
@@ -125,23 +123,23 @@ To inspect how a function works, and what are the arguments needed, we can use t
 ?nchar       # open help page for character counting function
 ```
 
-Running this code opens the help page on the bottom-right window of RStudio. These help pages sometimes can be overwhelming, but in time you will get used to it and be able to find the information you need. The most important sections in the help page are, 
+Running this code opens the help page on the bottom-right window of RStudio. These help pages sometimes can be overwhelming, but in time you will get used to it and be able to find the information you need. The most important sections in the help page are,
 
-1. Description: What the function does
-2. Usage: How should the function be typed 
-3. Arguments: Inputs 
-4. Value: The output 
-5. Examples 
+1.  Description: What the function does
+2.  Usage: How should the function be typed
+3.  Arguments: Inputs
+4.  Value: The output
+5.  Examples
 
-::: {.callout-note}
+::: callout-note
 Functions are also objects in R. You can write your own function, store it and use it - this is particularly useful for custom text processing tasks.
 :::
 
-::: {.callout-note}
-Using multiple functions: An output of a function can be the input of another function (like f(g(x)) in math). R will evaluate these starting from the innermost function, going outside step by step. 
+::: callout-note
+Using multiple functions: An output of a function can be the input of another function (like f(g(x)) in math). R will evaluate these starting from the innermost function, going outside step by step.
 :::
 
-::: {.callout-note}
+::: callout-note
 This may be confusing in complex operations. Therefore the developers of R came with an alternative, the pipeline: `%>%`. Pipeline operator takes the output of the code on its left hand side, and gives it as an input to the code on its right hand side (Pipeline does not exist in base R and we need extra packages to use it).
 :::
 
@@ -160,19 +158,18 @@ text_sample %>%   # take text_sample and pass it to next function
   tolower()       # then convert to lowercase
 ```
 
-::: {.callout-note}
+::: callout-note
 When you don't know the name of a function and are looking for text analysis solutions, asking ChatGPT or Claude is the most effective way to find a solution. Prompts asking about "R text mining", "R string manipulation", or "R regex" are good starting points for general guidance.
 :::
-
 
 # Data types in R for Text Analysis
 
 Understanding data types is crucial for text analysis, as we work with different types of textual information:
 
-1. **Characters (Strings)**: The most important data type for text analysis
-    1. Can be inside either single or double quote.
-    2. If a string includes quotation marks, either a single quote can be used within double quote (or vice versa) or backlashes `\` can be used as an *escape* character
-    3. Text data often contains special characters, punctuation, and various encodings
+1.  **Characters (Strings)**: The most important data type for text analysis
+    1.  Can be inside either single or double quote.
+    2.  If a string includes quotation marks, either a single quote can be used within double quote (or vice versa) or backlashes `\` can be used as an *escape* character
+    3.  Text data often contains special characters, punctuation, and various encodings
 
 ```{r}
 #| label: "Text Formatting"
@@ -190,8 +187,8 @@ tweet_text <- "Climate change is real! 🌍 #ClimateAction @UN"  # emojis, hasht
 print(tweet_text)  # display the text with special characters
 ```
 
-2. **Numbers**: Important for text analysis metrics (word counts, sentiment scores, frequencies)
-3. **Logical**: `TRUE` or `FALSE` with capital letters. `T` or `F` is also ok, but not preferred. Essential for filtering text data.
+2.  **Numbers**: Important for text analysis metrics (word counts, sentiment scores, frequencies)
+3.  **Logical**: `TRUE` or `FALSE` with capital letters. `T` or `F` is also ok, but not preferred. Essential for filtering text data.
 
 ```{r}
 #| label: "Variable Assignment"
@@ -209,7 +206,7 @@ class(sentiment_score) # check the data type of sentiment_score
 class(contains_keyword) # check the data type of contains_keyword
 ```
 
-4. **Factors (Categories)**: Useful for categorical text data like topics, sentiment categories, or document types
+4.  **Factors (Categories)**: Useful for categorical text data like topics, sentiment categories, or document types
 
 ```{r}
 #| label: "Factors"
@@ -229,7 +226,7 @@ table(document_types)   # count frequency of each document type
 
 R is an object-oriented programming language. We can create objects of different classes, assign values to them, edit and manipulate these objects. This is particularly important in text analysis where we often store and manipulate large collections of text data.
 
-The assignment operator is: `<-`. Shortcut: Option + "-" in MacOS, Alt + "-" in Windows. 
+The assignment operator is: `<-`. Shortcut: Option + "-" in MacOS, Alt + "-" in Windows.
 
 ```{r}
 #| label: "Storing objects"
@@ -269,7 +266,7 @@ class(climate_texts)  # check data type of text vector
 
 # Logical Expressions for Text Filtering
 
-Statements that produce logical outcomes, i.e. `TRUE` or `FALSE` outcomes, are essential for filtering and analyzing text data. Main logical operators are below: 
+Statements that produce logical outcomes, i.e. `TRUE` or `FALSE` outcomes, are essential for filtering and analyzing text data. Main logical operators are below:
 
 == equal to
 
@@ -277,11 +274,11 @@ Statements that produce logical outcomes, i.e. `TRUE` or `FALSE` outcomes, are e
 
 \> greater than
 
-< less than
+\< less than
 
 \>= greater than or equal to
 
-<= less than or equal to
+\<= less than or equal to
 
 \| or
 
@@ -330,13 +327,9 @@ str_detect(text1, "weather") | str_detect(text1, "climate")  # contains "weather
 
 # Types of objects in R for Text Analysis
 
-Almost everything in R is an object: functions, plots, dataframes, and text collections. 
+Almost everything in R is an object: functions, plots, dataframes, and text collections.
 
-Here we will focus on 4 main types of objects that text data are commonly stored in: 
-1. Vectors (collections of texts)
-2. Matrices (structured text data)
-3. Data frames (most common for text analysis datasets)
-4. Lists (flexible storage for complex text analysis results)
+Here we will focus on 4 main types of objects that text data are commonly stored in: 1. Vectors (collections of texts) 2. Matrices (structured text data) 3. Data frames (most common for text analysis datasets) 4. Lists (flexible storage for complex text analysis results)
 
 ## Vectors for Text Collections
 
@@ -440,7 +433,7 @@ tweets_copy
 
 A matrix can be thought as a two dimensional vector, with rows and columns. In text analysis, matrices are often used for document-term matrices, where rows represent documents and columns represent words or features.
 
-We can access values in a matrix using `[,]`. Comma here separates row and column information. 
+We can access values in a matrix using `[,]`. Comma here separates row and column information.
 
 ```{r}
 #| label: "Matrices"
@@ -514,9 +507,9 @@ text_df <- data.frame(
 text_df  # display the complete data frame
 ```
 
-Each variable within our data frame is a vector, and the rules of vectors also apply to them. All variables in a data frame must have the same length. But we might have variables with missing values, depicted as `NA` in R. 
+Each variable within our data frame is a vector, and the rules of vectors also apply to them. All variables in a data frame must have the same length. But we might have variables with missing values, depicted as `NA` in R.
 
-We can use `$` operator to access individual columns/variables. 
+We can use `$` operator to access individual columns/variables.
 
 ```{r}
 #| label: "Selecting columns 1"
@@ -533,7 +526,7 @@ text_df[3, 5] # get 3rd row, 5th column using row and column numbers
 
 text_df[3, "word_count"] # get 3rd row, word_count column using row number and column name
 ```
- 
+
 We can also subset the data frame using logical expressions - this is very common in text analysis for filtering documents:
 
 ```{r}
@@ -596,15 +589,15 @@ sample_analysis  # display the analysis results
 
 # Data Management for Text Analysis
 
-## Managing workspace and setting working directory 
+## Managing workspace and setting working directory
 
-When working with text analysis in R, we often read text files (like CSV files with social media data, PDFs, or plain text documents) and produce outputs as files (such as cleaned datasets, word clouds, or analysis results). 
+When working with text analysis in R, we often read text files (like CSV files with social media data, PDFs, or plain text documents) and produce outputs as files (such as cleaned datasets, word clouds, or analysis results).
 
-When R reads and writes such files, it works in a pre-specified location in our folder directory, called **working directory**. 
+When R reads and writes such files, it works in a pre-specified location in our folder directory, called **working directory**.
 
 From the settings of RStudio, we can set a default working directory. But as we need to work on different text analysis projects, it is better to set working directory to the folder we are using for the individual project to keep things tidy. This is also very useful when sharing text analysis code with collaborators.
 
-To see where our current working directory is, we can run `getwd()` command. To change the working directory we use `setwd("file path here")` command. 
+To see where our current working directory is, we can run `getwd()` command. To change the working directory we use `setwd("file path here")` command.
 
 ```{r}
 #| label: "Working environment"
@@ -667,7 +660,7 @@ all(climate_posts1$post_id == climate_posts2$post_id)  # compare method 1 and 2
 all(climate_posts1$post_id == climate_posts3$post_id)  # compare method 1 and 3
 ```
 
-As all three filtering methods produce identical results, we don't need to keep all of them in memory. `rm()` function removes objects from the environment. If we want to remove all objects from the environment (i.e. clean up the workspace), we can do it with a single command: `rm(list=ls())`. 
+As all three filtering methods produce identical results, we don't need to keep all of them in memory. `rm()` function removes objects from the environment. If we want to remove all objects from the environment (i.e. clean up the workspace), we can do it with a single command: `rm(list=ls())`.
 
 ```{r}
 #| label: "Managing the environment"
@@ -723,7 +716,7 @@ head(unique_words, 20) # display first 20 unique words
 length(unique_words)  # count total unique words in dataset
 ```
 
-## Creating new text analysis variables 
+## Creating new text analysis variables
 
 Text analysis often involves creating new variables based on text content. Let's create several useful text metrics:
 
@@ -969,10 +962,7 @@ predict(model2, newdata = new_data, interval = "confidence")  # predictions with
 
 ## Basic ggplot2 Syntax
 
-The basic structure of a ggplot2 command is:
-- `ggplot(data, aes(x, y))` - sets up the plot with data and aesthetic mappings
-- `+ geom_*()` - adds geometric objects (points, lines, bars, etc.)
-- `+ additional layers` - adds titles, themes, etc.
+The basic structure of a ggplot2 command is: - `ggplot(data, aes(x, y))` - sets up the plot with data and aesthetic mappings - `+ geom_*()` - adds geometric objects (points, lines, bars, etc.) - `+ additional layers` - adds titles, themes, etc.
 
 ```{r}
 #| label: "Ggplot2"
@@ -1034,7 +1024,6 @@ cyl_summary <- mtcars %>%
   group_by(cyl) %>%
   summarise(mean_mpg = mean(mpg))
 ```
-
 
 ```{r}
 #| label: "More bar plots"
@@ -1278,41 +1267,26 @@ ggsave("engagement_by_platform.png", plot = text_plot, width = 8, height = 6)  #
 
 # Final notes
 
-Your R skills for text analysis will develop as you practice. Text analysis can be challenging because it requires understanding both programming concepts and linguistic patterns. Patience is the key. Many times you will encounter upsetting errors and problems, especially when dealing with messy real-world text data. At these times it is useful to look out for help. 
+Your R skills for text analysis will develop as you practice. Text analysis can be challenging because it requires understanding both programming concepts and linguistic patterns. Patience is the key. Many times you will encounter upsetting errors and problems, especially when dealing with messy real-world text data. At these times it is useful to look out for help.
 
-R packages for text analysis have extensive vignettes and documentation. Key packages to explore further include:
-- **stringr**: for string manipulation and pattern matching
-- **tidytext**: for tidy text analysis workflows  
-- **tm**: traditional text mining package
-- **quanteda**: quantitative analysis of textual data
-- **textdata**: access to text datasets and sentiment lexicons
-- **wordcloud**: for creating word clouds
-- **topicmodels**: for topic modeling
+R packages for text analysis have extensive vignettes and documentation. Key packages to explore further include: - **stringr**: for string manipulation and pattern matching - **tidytext**: for tidy text analysis workflows\
+- **tm**: traditional text mining package - **quanteda**: quantitative analysis of textual data - **textdata**: access to text datasets and sentiment lexicons - **wordcloud**: for creating word clouds - **topicmodels**: for topic modeling
 
-You can access package documentation from the help pages or by simply googling or querying ChatGPT or Claude about different functions. 
+You can access package documentation from the help pages or by simply googling or querying ChatGPT or Claude about different functions.
 
-Keep in mind it is very likely that some other person encountered in the past the same text analysis challenge you are struggling with. You will be surprised about the specificity and variety of the solutions you can find by asking AI, and there is a variety of possibilities for customization of code for a huge variety of tasks and in a diverse and comprehensive collection of coding languages. 
+Keep in mind it is very likely that some other person encountered in the past the same text analysis challenge you are struggling with. You will be surprised about the specificity and variety of the solutions you can find by asking AI, and there is a variety of possibilities for customization of code for a huge variety of tasks and in a diverse and comprehensive collection of coding languages.
 
 # References
 
 For further training in text analysis with R, excellent resources include:
 
-- **Text Mining with R** by Julia Silge and David Robinson (free online book)
-- **Quantitative Social Science** by Kosuke Imai (includes text analysis chapters)
-- **An Introduction to Statistical Learning** by James, Witten, Hastie, and Tibshirani
-- RStudio Education resources and cheat sheets
-- Various text analysis tutorials and workshops available online
+-   **Text Mining with R** by Julia Silge and David Robinson (free online book)
+-   **Quantitative Social Science** by Kosuke Imai (includes text analysis chapters)
+-   **An Introduction to Statistical Learning** by James, Witten, Hastie, and Tibshirani
+-   RStudio Education resources and cheat sheets
+-   Various text analysis tutorials and workshops available online
 
-Key takeaways from today:
-- Text data requires special handling and cleaning before analysis
-- R provides powerful tools for string manipulation and pattern matching
-- Data frames are ideal for storing text datasets with metadata
-- Logical expressions are essential for filtering text based on content
-- The `stringr` package is indispensable for text processing
-- Regular expressions (regex) are powerful for pattern matching in text
-- Statistical analysis and visualization are crucial for understanding text data patterns
-- ggplot2 provides excellent tools for visualizing text analysis results
-- Practice with real text data is essential for mastering these skills
+Key takeaways from today: - Text data requires special handling and cleaning before analysis - R provides powerful tools for string manipulation and pattern matching - Data frames are ideal for storing text datasets with metadata - Logical expressions are essential for filtering text based on content - The `stringr` package is indispensable for text processing - Regular expressions (regex) are powerful for pattern matching in text - Statistical analysis and visualization are crucial for understanding text data patterns - ggplot2 provides excellent tools for visualizing text analysis results - Practice with real text data is essential for mastering these skills
 
 Wish you all best of luck with your text analysis journey!
 
