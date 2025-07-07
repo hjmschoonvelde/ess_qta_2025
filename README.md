@@ -14,6 +14,11 @@ To facilitate communication and interaction throughout the course we will make u
 
 On the first day of the course we will have a short R crash course. Please contact James directly if you want to participate in this crash course. The crash course will be held on July 7th, 2025, at 2:30 - 4:00 PM (BST).
 
+| Date        | Link           |
+| ------------- |:-------------:|
+| July  7   | [.qmd]( Crash_course/R_Crash_Course_for_Text_Analysis.qmd) [.html](Crash_course/R_Crash_Course_for_Text_Analysis.html)  |
+
+
 ## Slides
 
 | Date        | Slides           |  Date        | Slides           |
