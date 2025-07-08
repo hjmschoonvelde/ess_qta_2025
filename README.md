@@ -33,7 +33,7 @@ On the first day of the course we will have a short R crash course. Please conta
 
 | Date        | Link           | Solutions           |    
 | ------------- |:-------------:|:-------------:|
-| July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md ) [.qmd]( Lab_sessions/Day_1/Lab_Session_QTA_1.qmd )  | [](  ) []( ) |
+| July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md ) [.qmd]( Lab_sessions/Day_1/Lab_Session_QTA_1.qmd )  | [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.md ) [.qmd]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.qmd ) |
 | July  8   | [.md]( Lab_sessions/Day_2/Lab_Session_QTA_2.md ) [.qmd]( Lab_sessions/Day_2/Lab_Session_QTA_2.qmd ) | [](  ) []( ) |
 | July  9   | [](  ) [](  )  | [](  ) []( ) |
 | July  10   | [](  ) [](  )  | [](  ) []( ) |
