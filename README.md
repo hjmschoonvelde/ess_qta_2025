@@ -36,7 +36,7 @@ On the first day of the course we will have a short R crash course. Please conta
 | July  7   |  [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1.md ) [.qmd]( Lab_sessions/Day_1/Lab_Session_QTA_1.qmd )  | [.md]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.md ) [.qmd]( Lab_sessions/Day_1/Lab_Session_QTA_1_Answers.qmd ) |
 | July  8   | [.md]( Lab_sessions/Day_2/Lab_Session_QTA_2.md ) [.qmd]( Lab_sessions/Day_2/Lab_Session_QTA_2.qmd ) | [.md]( Lab_sessions/Day_2/Lab_Session_QTA_2_Answers.md ) [.qmd]( Lab_sessions/Day_2/Lab_Session_QTA_2_Answers.qmd ) |
 | July  9   | [.md]( Lab_sessions/Day_3/Lab_Session_QTA_3.md ) [.qmd]( Lab_sessions/Day_3/Lab_Session_QTA_3.qmd ) | [](  ) []( ) |
-| July  10   | [](  ) [](  )  | [](  ) []( ) |
+| July  10   | [.md]( Lab_sessions/Day_4/Lab_Session_QTA_4.md ) [.qmd]( Lab_sessions/Day_4/Lab_Session_QTA_4.qmd )  | [](  ) []( ) |
 | July  11   | [](  ) [](  )  | [](  ) []( ) |
 | July  14   | [](  ) [](  )  | [](  ) []( ) |
 | July  15   | []( )  [](  )  | [](  ) []( ) |
