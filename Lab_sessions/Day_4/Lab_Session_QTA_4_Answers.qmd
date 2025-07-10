@@ -38,7 +38,7 @@ speeches_inaugural <- data_corpus_inaugural
 
 ```
 
-We'll first tokenize this corpus.
+We'll first tokenize this corpus. 
 
 ```{r}
 #| label: "dfm_inaugural"
@@ -59,7 +59,7 @@ tokens_inuagural <- tokens(speeches_inaugural,
 
 ```
 
-In a next step, we'll include negations of positive and negative sentiment words. This is done by using the `tokens_compound` function, which allows you to create compound tokens based on a dictionary of negations. We'll also create a dfm called `dfm_inaugural` that contains the tokenized inaugural speeches. 
+In a next step, we'll include negations of positive and negative sentiment words. This is done by using the `tokens_compound` function, which allows you to create compound tokens based on a dictionary of negations. We'll also create a dfm called `dfm_inaugural` that contains the tokenized inaugural speeches.
 
 ```{r}
 #| label: "tokens_compound"
@@ -303,8 +303,6 @@ Let's plot the fraction of economy words over time. We'll add a smooth line to t
 
 lineplot_economy <- ggplot(docvars(speeches_inaugural),
                                 aes(x = Year, y = economy)) +
-  geom_line() +
-  theme_minimal()
   geom_smooth(method = "loess",
               span = 0.2,
               color = "#56B4E9") + 
@@ -315,82 +313,96 @@ print(lineplot_economy)
 
 ```
 
+
 ## Excercise
 
 Create a dictionary titled `threat_dictionary`, with threat as a key and threat* peril* risk* danger* hazard* menace* attack* violence* crisis* instabil* emergency* conflict* terror* hostil* aggress* assault* disaster* catastroph* security* insecurity* as values
 
 
-```{r}
-#| label: "threat_dictionary"
-#| echo: true
-#| message: false
-#| warning: false
-#your answer here
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
+
+threat_dict <- dictionary(list(
+  Threat = c(
+    "threat*", "peril*", "risk*", "danger*", "hazard*", "menace*", 
+    "attack*", "violence*", "crisis*", "instabil*", "emergency*", 
+    "conflict*", "terror*", "hostil*", "aggress*", "assault*", 
+    "disaster*", "catastroph*", "security*", "insecurity*"
+  )
+))
+
 ```
 
 Apply this dictionary to `dfm_inaugural` and call the resulting object `dfm_inaugural_threat`. Append the results in the docvars of `speeches_inaugural` as a variable `threat` containing the fraction of threat words in each speech
 
-```{r}
-#| label: "dfm_inaugural_threat"
-#| echo: true
-#| message: false
-#| warning: false
-#your answer here
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
+
+dfm_inaugural_threat <- dfm_lookup(dfm_inaugural, 
+                                dictionary = threat_dict)
+
+docvars(speeches_inaugural, "threat") <- 100*as.numeric(dfm_inaugural_threat) / ntoken(dfm_inaugural)
+
 ```
 
 Plot the fraction of threat words over time
 
 
-```{r}
-#| label: "threat_over_time"
-#| echo: true
-#| message: false
-#| warning: false
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
 
-#your answer here
+
+lineplot_threat<- ggplot(docvars(speeches_inaugural),
+                                aes(x = Year, y = threat)) +
+  geom_smooth(method = "loess",
+              span = 0.2,
+              color = "#B22222") + 
+  theme_minimal()
+
+
+print(lineplot_threat)
 ```
 
 Apply the NRC emotion detection lexicon to `dfm_inaugural` and append a varioble called nrc_fear as metadata to `speeches_inaugural` that contains the fraction of NRC fear words in each speech.
 
-```{r}
-#| label: "fear_dictionary"
-#| echo: true
-#| message: false
-#| warning: false
-#your answer here
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
+dfm_inaugural_fear <- dfm_lookup(dfm_inaugural, 
+                                dictionary = data_dictionary_NRC)
+
+docvars(speeches_inaugural, "nrc_fear") <- as.numeric(dfm_inaugural_fear[,4]) / ntoken(dfm_inaugural)
 ```
 
 Plot the fraction of fear words over time
 
-```{r}
-#| label: "fear_over_time"
-#| echo: true
-#| message: false
-#| warning: false
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
+lineplot_fear<- ggplot(docvars(speeches_inaugural),
+                                aes(x = Year, y = nrc_fear)) +
+  geom_smooth(method = "loess",
+              span = 0.2,
+              color = "#301934") + 
+  theme_minimal()
 
-#your answer here
+
+print(lineplot_fear)
 
 ```
 
 Calculate the correlation between nrc_fear and threat, and produce a scatterplot
 
-```{r}
-#| label: "correlation"
-#| echo: true
-#| message: false
-#| warning: false
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
 
-#your answer here
+cor(docvars(speeches_inaugural, "threat"), docvars(speeches_inaugural, "nrc_fear"))
+
+correlation_plot_ <- ggplot(docvars(speeches_inaugural), aes(threat, nrc_fear, label = President)) + 
+  geom_point(pch = 21, fill = "gray25", color = "white", size = 2.5) +
+  scale_x_continuous(name = "Threat score") +
+  scale_y_continuous(name = "NRC fear score") +
+  theme_minimal() + geom_text(hjust=0, vjust=0)
+
+print(correlation_plot_)
 
 ```
 
 Reflect on these results
 
-```{r}
-#| label: "reflection"
-#| echo: true
-#| message: false
-#| warning: false
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
 
 #your answer here
 ```
