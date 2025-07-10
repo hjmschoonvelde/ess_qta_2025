@@ -25,7 +25,7 @@ On the first day of the course we will have a short R crash course. Please conta
 | July  7   | [.pdf]( Slides/Slides_QTA_1.pdf)| July  14   |  |
 | July  8   | [.pdf]( Slides/Slides_QTA_2.pdf)| July  15   |  |
 | July  9   | [.pdf]( Slides/Slides_QTA_3.pdf) | July 16  |  |
-| July  10  | | July  17   | |
+| July  10  | [.pdf]( Slides/Slides_QTA_4.pdf)| July  17   | |
 | July  11  | | July 18 | |
 
 
@@ -146,7 +146,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 *Day 9 - July 17*
 
--	**Lecture**: Deep learning. Transfer Learning. Concluding remarks 
+-	**Lecture**: Deep learning. Transfer Learning. 
 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
