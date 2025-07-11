@@ -112,10 +112,10 @@ sentiment tokens by the total number of tokens in the speech. We can
 save this as a variable in the docvars of the dfm object.
 
 ``` r
-#fraction of negative words
+#number of negative words
 docvars(dfm_inaugural, "neg_words") <- as.numeric(dfm_inaugural_LSD[,1]) + as.numeric(dfm_inaugural_LSD[,3])
 
-#fraction of positive words
+#number of positive words
 docvars(dfm_inaugural, "pos_words") <- as.numeric(dfm_inaugural_LSD[,2]) + as.numeric(dfm_inaugural_LSD[,4])
 
 #sentiment score
@@ -193,10 +193,10 @@ Lexicon
 dfm_inaugural_NRC <- dfm_lookup(dfm_inaugural, 
                                 dictionary = data_dictionary_NRC)
 
-#fraction of negative words (NB: these are stored in the 6th column in the dfm)
+#number of negative words (NB: these are stored in the 6th column in the dfm)
 docvars(dfm_inaugural, "neg_NRC_words") <- as.numeric(dfm_inaugural_NRC[,6])
 
-#fraction of positive words (NB: these are stored in the 7th column in the dfm)
+#number of positive words (NB: these are stored in the 7th column in the dfm)
 docvars(dfm_inaugural, "pos_NRC_words") <- as.numeric(dfm_inaugural_NRC[,7])
 
 #sentiment score
@@ -431,7 +431,7 @@ Plot the fraction of fear words over time
 #your answer here
 ```
 
-Calculate the correlation between nrc.fear and threat, and produce a
+Calculate the correlation between nrc_fear and threat, and produce a
 scatterplot
 
 ``` r

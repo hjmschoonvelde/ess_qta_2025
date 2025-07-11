@@ -26,7 +26,7 @@ On the first day of the course we will have a short R crash course. Please conta
 | July  8   | [.pdf]( Slides/Slides_QTA_2.pdf)| July  15   |  |
 | July  9   | [.pdf]( Slides/Slides_QTA_3.pdf) | July 16  |  |
 | July  10  | [.pdf]( Slides/Slides_QTA_4.pdf)| July  17   | |
-| July  11  | | July 18 | |
+| July  11  | [.pdf]( Slides/Slides_QTA_5.pdf) | July 18 | |
 
 
 ## Lab Sessions

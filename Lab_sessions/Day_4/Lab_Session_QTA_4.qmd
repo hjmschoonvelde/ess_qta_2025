@@ -115,10 +115,10 @@ We can calculate the relative fraction of negative sentiment tokens to positive 
 #| message: false
 #| warning: false
 
-#fraction of negative words
+#number of negative words
 docvars(dfm_inaugural, "neg_words") <- as.numeric(dfm_inaugural_LSD[,1]) + as.numeric(dfm_inaugural_LSD[,3])
 
-#fraction of positive words
+#number of positive words
 docvars(dfm_inaugural, "pos_words") <- as.numeric(dfm_inaugural_LSD[,2]) + as.numeric(dfm_inaugural_LSD[,4])
 
 #sentiment score
@@ -138,10 +138,10 @@ Let's do the same, but this time with the NRC Word-Emotion Association Lexicon
 dfm_inaugural_NRC <- dfm_lookup(dfm_inaugural, 
                                 dictionary = data_dictionary_NRC)
 
-#fraction of negative words (NB: these are stored in the 6th column in the dfm)
+#number of negative words (NB: these are stored in the 6th column in the dfm)
 docvars(dfm_inaugural, "neg_NRC_words") <- as.numeric(dfm_inaugural_NRC[,6])
 
-#fraction of positive words (NB: these are stored in the 7th column in the dfm)
+#number of positive words (NB: these are stored in the 7th column in the dfm)
 docvars(dfm_inaugural, "pos_NRC_words") <- as.numeric(dfm_inaugural_NRC[,7])
 
 #sentiment score
@@ -303,8 +303,6 @@ Let's plot the fraction of economy words over time. We'll add a smooth line to t
 
 lineplot_economy <- ggplot(docvars(speeches_inaugural),
                                 aes(x = Year, y = economy)) +
-  geom_line() +
-  theme_minimal()
   geom_smooth(method = "loess",
               span = 0.2,
               color = "#56B4E9") + 
