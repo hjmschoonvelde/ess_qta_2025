@@ -1,0 +1,494 @@
+---
+title: "QTA lab Session 5: Supervised machine learning"
+format: 
+  #html: default
+  gfm: default
+editor: source
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, results = TRUE)
+```
+
+This document walks you through an example of supervised machine learning to predict which UK prime minister delivered a speech. For this we'll use UK prime minister speeches from the [EUSpeech](https://dataverse.harvard.edu/dataverse/euspeech) dataset. 
+
+For the supervised machine learning exercise you will need to install the `quanteda.textmodels`, `quanteda.textplots` and the `quanteda.textstats` packages. We will also use the `tidyverse` library to create training and test sets. Furthermore, we will use the `caret` library to produce a confusion matrix. This library requires some dependencies (i.e., functions from other packages), so if you are working from your computer will need install it like so: `install.packages('caret', dependencies = TRUE)`.
+
+```{r}
+#| label: "load_libraries"
+#| echo: true
+#| message: false
+#| warning: false
+
+#load libraries
+library(quanteda)
+library(quanteda.textmodels)
+library(quanteda.textplots)
+library(quanteda.textstats)
+library(tidyverse)
+library(caret)
+
+```
+
+Let's read in the speeches using the `read.csv()` function. We'll also construct a corpus and select speeches from Gordon Brown and David Cameron. The speeches have been cleaned already so we can go ahead directly. 
+
+```{r}
+#| label: "read_speeches"
+#| echo: true
+#| message: false
+#| warning: false
+
+speeches <- read.csv(file = "speeches_uk.csv", 
+                     header = TRUE, 
+                     stringsAsFactors = FALSE, 
+                     sep = ",", 
+                     encoding = "UTF-8")
+
+#construct a corpus
+corpus_pm <- corpus(speeches,
+                    text_field = "text")
+
+#select speeches from Cameron and Brown
+corpus_brown_cameron <- corpus_subset(corpus_pm, speaker != "T. Blair")
+```
+
+Let's tokenise this corpus and create a dfm called dfm_brown_cameron. We'll remove punctuation, symbols, numbers, urls, separators, and split hyphens. We'll also remove stopwords.
+
+```{r}
+#| label: "tokenise_and_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+tokens_brown_cameron <- tokens(corpus_brown_cameron,
+                            what = "word",
+                            remove_punct = TRUE, 
+                            remove_symbols = TRUE, 
+                            remove_numbers = TRUE,
+                            remove_url = TRUE,
+                            remove_separators = TRUE,
+                            split_hyphens = FALSE,
+                            padding = FALSE
+                            ) %>%
+  tokens_remove(stopwords("en"))
+
+```
+
+In order to make this dfm less sparse, we will only select features that appear in at least 1% of speeches
+
+```{r}
+#| label: "dfm_trim"
+#| echo: true
+#| message: false
+#| warning: false
+
+dfm_brown_cameron <- dfm(tokens_brown_cameron ) %>%
+  dfm_trim(min_docfreq = 0.01, docfreq_type = "prop")
+
+dim(dfm_brown_cameron)
+```
+
+We now have a dfm containing 776 speeches delivered by either Gordon Brown or David Cameron and approximately 6832 tokens. 
+
+## Naive Bayes
+
+Let's see if we can build a classifier to predict if a speech is delivered by Cameron or Brown. First, we'll generate a vector of 250 random numbers selected from the vector 1:776. We'll also append an id variable`id_numeric` to our dfm. 
+
+**NB**: The `set.seed()` function makes sure that you can reproduce your random samples. 
+
+```{r}
+#| label: "set.seed_and_sample"
+#| echo: true
+#| message: false
+#| warning: false
+
+#set.seed() allows us to reproduce randomly generated results 
+
+set.seed(2)
+
+#generate a sample of 250 numbers without replacement from 1 to 776
+
+id_train <- sample(1:nrow(dfm_brown_cameron), 250, replace = FALSE)
+head(id_train, 10)
+
+#create id variable
+docvars(dfm_brown_cameron, "id_numeric") <- 1:ndoc(dfm_brown_cameron)
+
+#take note of how many speeches were delivered by either Brown or Cameron
+table(docvars(dfm_brown_cameron, "speaker"))
+```
+
+We then take a sample of 250 speeches as our training data and turn it into a dfm. The `%in%` operator produces a logical vector of the same length as id_numeric, and contains a TRUE if `id_numeric[i]` appears in id_train and FALSE otherwise. 
+
+```{r}
+#| label: "create_train_test_sets"
+#| echo: true
+#| message: false
+#| warning: false
+
+# create a training set: a dfm of 250 documents with row numbers included in id_train
+train_dfm <- dfm_subset(dfm_brown_cameron, id_numeric %in% id_train)
+
+#create a test set: a dfm of 100 documents whose row numbers are *not* included in id_train by using the negation operator `!`
+test_dfm <- dfm_subset(dfm_brown_cameron, !id_numeric %in% id_train)
+test_dfm <- dfm_sample(test_dfm, 100, replace = FALSE)
+
+#check whether there is no overlap between the train set and the test set using the which() function
+which((docvars(train_dfm, "id_numeric")  %in% docvars(test_dfm, "id_numeric")))
+```
+
+We can now train a Naive Bayes classifier on the training set using the `textmodel_nb()` function. We'll use the `smooth` argument to apply Laplace smoothing. This is a technique to avoid zero probabilities in the model. The `smooth` argument specifies the smoothing parameter, which is usually set to 1. We'll also use the `prior` argument to specify the prior distribution of the classes; "docfreq" denotes the prior probability of each class is the proportion of documents in the training set that belong to that class. This is the default setting in `textmodel_nb()`. The `distribution` argument specifies the distribution of the features.
+
+```{r}
+#| label: "nb_classifier"
+#| echo: true
+#| message: false
+#| warning: false
+
+speaker_classifier_nb <- textmodel_nb(train_dfm, 
+                                      y = docvars(train_dfm, "speaker"), 
+                                      smooth = 1,
+                                      prior = "docfreq",
+                                      distribution = "multinomial")
+
+summary(speaker_classifier_nb)
+
+
+```
+
+Let's analyze if we can predict whether speeches in the test set are from Cameron or Brown. We'll use the `predict()` function to predict the speakers.
+
+```{r}
+#| label: "dfm_match"
+#| echo: true
+#| message: false
+#| warning: false
+
+#Naive Bayes can only take features that occur both in the training set and the test set. We can make the features identical by passing train_dfm to dfm_match() as a pattern.
+
+matched_dfm <- dfm_match(test_dfm, features = featnames(train_dfm))
+
+#predict speaker 
+pred_speaker_classifier_nb <- predict(speaker_classifier_nb, 
+                                      newdata = matched_dfm, 
+                                      type = "class")
+
+head(pred_speaker_classifier_nb)
+
+```
+
+We could also predict the probability the model assigns to each class. We could use this to create an ROC curve.
+
+
+```{r}
+#| label: "predict_prob_nb"
+#| echo: true
+#| message: false
+#| warning: false
+
+#predict probability of speaker
+pred_prob_classifier_nb <- predict(speaker_classifier_nb, 
+                                   newdata = matched_dfm, 
+                                   type = "probability")
+
+head(pred_prob_classifier_nb)
+```
+
+Let's see how well our classifier did by producing a confusion matrix. A confusion matrix is a table that is often used to describe the performance of a classification model on a set of test data for which the true values are known.
+
+```{r}
+#| label: "confusion_matrix_nb"
+#| echo: true
+#| message: false
+#| warning: false
+tab_class_nb <- table(predicted_speaker_nb = pred_speaker_classifier_nb, 
+                      actual_speaker = docvars(test_dfm, "speaker"))
+
+print(tab_class_nb)
+```
+
+So it appears we are somewhat successful at predicting whether a speech is delivered by Cameron or Brown. Our accuracy is 90%. 
+
+Let's have a look at the most predictive features for Cameron in the complete corpus.
+
+```{r}
+#| label: "predictive_features"
+#| echo: true
+#| message: false
+#| warning: false
+
+# Step 1: Extract the conditional probabilities. This code extracts the conditional probabilities of each feature given each class from the Naive Bayes model, transposes the result, and converts it to a data frame.
+
+feature_probs <- as.data.frame(t(speaker_classifier_nb$param))
+
+# Step 2: Add a column for the feature names (words)
+feature_probs$feature <- rownames(feature_probs)
+
+# Step 3: Compute log odds difference
+# Avoid division by zero or log(0) by adding a small constant (if necessary)
+epsilon <- 1e-10  # tiny number for stability
+
+feature_probs$log_odds_diff <- log((feature_probs$`D. Cameron` + epsilon) /
+                                   (feature_probs$`G. Brown` + epsilon))
+
+# Step 4: Get the most distinctive features
+
+# Top 20 words most associated with D. Cameron (positive log odds). This code orders the features by the log odds difference in descending order and selects the top 20 features most associated with Cameron.
+top_cameron <- feature_probs[order(-feature_probs$log_odds_diff), ][1:20, ]
+print(top_cameron)
+
+# Top 20 words most associated with G. Brown (negative log odds)
+top_brown <- feature_probs[order(feature_probs$log_odds_diff), ][1:20, ]
+print(top_brown)
+
+```
+
+
+
+
+## Logistic regression
+
+Let's try a different classifier, a logistic regression. This regression is not any different a logistic regression you may have come across estimating a regression model for a binary dependent variable, but this time we use it solely for prediction purposes. 
+
+```{r}
+#| label: "logistic"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+speaker_classifier_lr <- textmodel_lr(train_dfm, 
+                                      y = docvars(train_dfm, "speaker"))
+
+#predict speaker 
+pred_speaker_classifier_lr <- predict(speaker_classifier_lr, 
+                                   newdata = matched_dfm, 
+                                   type = "class")
+
+#confusion matrix
+tab_class_lr <- table(predicted_speaker_lr = pred_speaker_classifier_lr, 
+                       actual_speaker = docvars(test_dfm, "speaker"))
+print(tab_class_lr)
+```
+
+We now need to decide which of these classifiers works best for us. As discussed in class we would need to check precision, recall and F1 scores. The `confusionMatrix()` function in the `caret` package does exactly that. 
+
+```{r}
+#| label: "model_comparison"
+#| echo: true
+#| message: false
+#| warning: false
+
+confusionMatrix(tab_class_nb, mode = "prec_recall")
+
+confusionMatrix(tab_class_lr, mode = "prec_recall")
+
+```
+
+Based on the F1 score, our logistic regression classifier is performing slightly better than predictions from our Naive Bayes classifier, so, all else equal we would go with logistic regression. 
+
+## TF-IDF weighting
+
+In order to improve on our predictions, we may think of other ways to represent our documents. A common approach is to produce a feature-weighted dfm by calculating the term-frequency-inverse document frequency (tfidf) for each token. The intuition behind this transformation is that it gives a higher weight to tokens that occur often in a particular document but not much in other documents, compared to tokens that occur often in a particular document but also in other documents. Tf-idf weighting is done through `dfm_tfidf()`. 
+
+
+```{r}
+#| label: "tfidf_weighted_nb"
+#| echo: true
+#| message: false
+#| warning: false
+
+train_dfm_weighted <- dfm_tfidf(train_dfm)
+matched_dfm_weighted <- dfm_tfidf(matched_dfm)
+
+speaker_classifier_weighted_lr <- textmodel_lr(train_dfm_weighted, 
+                                               y = docvars(train_dfm_weighted, "speaker"), 
+                                               smooth = 1,
+                                               prior = "docfreq",
+                                               distribution = "multinomial")
+
+pred_speaker_classifier_weigthed_lr <- predict(speaker_classifier_weighted_lr, 
+                                               newdata = matched_dfm_weighted, 
+                                               type = "class")
+
+tab_class_weighted_lr <- table(predicted_speaker = pred_speaker_classifier_weigthed_lr, 
+                               actual_speaker = docvars(test_dfm, "speaker"))
+
+print(tab_class_weighted_lr)
+```
+
+We'll, we indeed did slightly better this time. 
+
+## Exercises
+
+For this set of exercises we will use the `data_corpus_moviereviews` corpus that is stored in **quanteda**. This dataset contains 2000 move reviews which are labeled as positive or negative. We'll try to predict these labels using supervised machine learning. 
+
+Apply `table()` to the sentiment variable appended to `data_corpus_moviereviews` to inspect how many reviews are labelled positive and negative.
+
+```{r}
+#| label: "table"
+#| echo: true
+#| message: false
+#| warning: false
+
+table(docvars(data_corpus_moviereviews, "sentiment"))
+```
+
+Check the distribution of the number of tokens across reviews by applying `ntoken()` to the corpus and then produce a histogram using `hist()` .  
+
+```{r}
+#| label: "ntoken"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+data_corpus_moviereviews %>% 
+    ntoken() %>% 
+    hist()
+
+```
+
+
+Tokenise the corpus and save it as `tokens_reviews`. 
+
+```{r}
+#| label: "tokenise"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+tokens_reviews <- tokens(data_corpus_moviereviews,
+                         what = "word",
+                         remove_punct = TRUE, 
+                         remove_symbols = TRUE, 
+                         remove_numbers = TRUE,
+                         remove_url = TRUE,
+                         remove_separators = TRUE,
+                         split_hyphens = FALSE,
+                         padding = FALSE) %>%
+  tokens_remove(stopwords("en"))
+```
+
+Create a document-feature matrix and call it `dfm_reviews`
+
+```{r}
+#| label: "create_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+dfm_reviews <- dfm(tokens_reviews)
+```
+
+Apply `topfeatures()` to this dfm and get the 50 most frequent features.
+
+```{r}
+#| label: "topfeatures"
+#| echo: true
+#| message: false
+#| warning: false
+
+topfeatures(dfm_reviews, n = 50)
+```
+
+Repeat this step, but get the 25 most frequent features from reviews labelled as "pos" and "neg", using the `groups` function in the `topfeatures()` function. 
+
+
+```{r}
+#| label: "topfeatures_pos_neg"
+#| echo: true
+#| message: false
+#| warning: false
+
+topfeatures(dfm_reviews, groups = sentiment, n = 25)
+```
+
+
+## Supervised Machine Learning
+
+Set a seed (`set.seed()`) to ensure reproducibility. 
+
+```{r}
+#| label: "set.seed"
+#| echo: true
+#| message: false
+#| warning: false
+#| 
+set.seed(123)
+```
+
+Create a new dfm with a random sample of 1500 reviews. We will use this dfm as a training set. Call it `train_movies_dfm`. Use the sampling code we used above. 
+
+```{r}
+#| label: "train_movies_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+#|
+docvars(dfm_reviews, "id") <- 1:ndoc(data_corpus_moviereviews)
+id_train <- sample(1:ndoc(data_corpus_moviereviews), 1500, replace = FALSE)
+
+train_movies_dfm <- dfm_subset(dfm_reviews, id %in% id_train)
+
+```
+
+Create another dfm with the remaining 500 reviews. Call it `test_movies_dfm`. This will be our test set.
+
+
+```{r}
+#| label: "test_movies_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+test_movies_dfm <- dfm_subset(dfm_reviews, !id %in% id_train)
+
+```
+
+Apply `textmodel_nb()` to the dfm consisting of 1500 documents. Use "sentiment" to train the classifier. Call the output `tmod_nb`
+
+```{r}
+#| label: "tmod_nb"
+#| echo: true
+#| message: false
+#| warning: false
+
+tmod_nb <- textmodel_nb(train_movies_dfm, 
+                        y =train_movies_dfm$sentiment, 
+                        smooth = 1,
+                        prior = "docfreq",
+                        distribution = "multinomial")
+```
+
+Predict the sentiment of the remaining 500 documents by using `predict()`. Call the output `prediction`.
+
+
+```{r}
+#| label: "predict"
+#| echo: true
+#| message: false
+#| warning: false
+
+prediction <- predict(tmod_nb, newdata = test_movies_dfm, type = "class")
+```
+
+Create a cross-table/confusion matrix to assess the classification performance using `table()`. 
+
+```{r}
+#| label: "confusion_matrix"
+#| echo: true
+#| message: false
+#| warning: false
+
+tab_nb <- table(prediction = prediction, 
+                human = docvars(test_movies_dfm, "sentiment"))
+
+print(tab_nb)
+
+```
+
+
