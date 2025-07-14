@@ -39,7 +39,7 @@ On the first day of the course we will have a short R crash course. Please conta
 | July  10   | [.md]( Lab_sessions/Day_4/Lab_Session_QTA_4.md ) [.qmd]( Lab_sessions/Day_4/Lab_Session_QTA_4.qmd )  | [.md]( Lab_sessions/Day_4/Lab_Session_QTA_4_Answers.md ) [.qmd]( Lab_sessions/Day_4/Lab_Session_QTA_4_Answers.qmd ) |
 | July  11   | [.md]( Lab_sessions/Day_5/Lab_Session_QTA_5.md ) [.qmd]( Lab_sessions/Day_5/Lab_Session_QTA_5.qmd )  | [.md]( Lab_sessions/Day_5/Lab_Session_QTA_5_Answers.md ) [.qmd]( Lab_sessions/Day_5/Lab_Session_QTA_5_Answers.qmd ) |
 | July  14   | [.md]( Lab_sessions/Day_6/Lab_Session_QTA_6.md ) [.qmd]( Lab_sessions/Day_6/Lab_Session_QTA_6.qmd ) | [](  ) []( ) |
-| July  15   | []( )  [](  )  | [](  ) []( ) |
+| July  15   | [.md]( Lab_sessions/Day_7/Lab_Session_QTA_7.md ) [.qmd]( Lab_sessions/Day_7/Lab_Session_QTA_7.qmd )  | [](  ) []( ) |
 | July  16   | [](  ) [](  )  | [](  ) []( ) |
 | July  17   | [](  ) [](  )  | [](  ) []( ) |
 | July  18   | [](  ) [](  )  | [](  ) []( ) |
