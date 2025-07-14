@@ -158,7 +158,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 -	**Lecture**: LLMs. Concluding remarks 
 
--	**Lab**: Practice with LLMs using the **rollama** package (Gruber & Weber, 2024)
+-	**Lab**: Practice with LLMs using the **quanteda.llm** (Maerz and Benoit, 2025), **ellmer** (Wickham et al. 2025), and the **ollamar** (Lin & Safi, 2025) packages.
 
 - **Readings**:
    - Bail, C.A., (2024). Can Generative AI improve social science? Proceedings of the National Academy of Sciences, 121(21) p.e2314021121.
