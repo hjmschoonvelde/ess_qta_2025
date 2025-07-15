@@ -1,0 +1,413 @@
+---
+title: "QTA lab session 8: NLP processing in R"
+format: 
+  #html: default
+  gfm: default
+editor: source
+---
+
+The goal of today's lab session is to inspect the functionality of the **udpipe** library. **UDPipe** (Wijffels, 2022) offers 'language-agnostic tokenization, tagging, lemmatization and dependency parsing of raw text'. We will focus on tagging and lemmatization in particular and how these pre-processing steps may make further analysis more precise. Lemmatizing generally works better than stemming, especially for inflected languages such as German or French. Part-of-Speech (POS) tags identify the type of word (noun, verb, etc) so it can be used to e.g. analyse only the verbs (actions) or adjectives and adverbs (descriptions).
+
+Another library that was developed by the quanteda team and that has similar functionality is **spacyr** (Benoit & Matsuo, 2020), an R wrapper around the spaCy package in Python. See this [link](https://spacyr.quanteda.io/articles/using_spacyr.html) for more information on using **spacyr**.
+
+Let's load required packages first.
+
+```{r}
+#| label: "load_libraries"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+library(tidyverse)
+library(quanteda)
+library(quanteda.textplots)
+library(quanteda.textmodels)
+library(quanteda.textstats)
+library(quanteda.sentiment)
+library(seededlda)
+library(udpipe)
+
+```
+
+The primary challenge for our purposes is to communicate between **udpipe** and **quanteda**. In the following code block we first turn our corpus into a dataframe called `inaugural_speeches_df` and save the speeches -- which are now stored in `inaugural_speeches_df$text` -- as a character vector called txt. **udpipe** works with character vectors. 
+
+```{r}
+#| label: "load_convert_inaugural_speeches"
+#| echo: true
+#| message: false
+#| warning: false
+
+inaugural_speeches <- data_corpus_inaugural
+
+inaugural_speeches_df <- convert(inaugural_speeches,
+                                 to = "data.frame")
+
+txt <- inaugural_speeches_df$text
+str(txt)
+
+```
+
+Let's apply the `udpipe` function to this `txt`. This function tags each token in each speech, based on an English-language model which will be downloaded into the working directory. We instruct `udpipe` to include the doc_ids from our **quanteda** corpus object. This will help us later on when we want to transform the output of our **udpipe** workflow back into a corpus which we can inspect with **quanteda** functions. As_tibble() is used to turn the output into a tibble, which is a more user-friendly format than the default output of **udpipe**.
+
+```{r}
+#| label: "udpipe"
+#| echo: true
+#| message: false
+#| warning: false
+
+parsed_tokens <-  udpipe(txt, "english", 
+                         doc_id = inaugural_speeches_df$doc_id) %>% 
+  as_tibble()
+
+```
+
+Let's inspect what's inside parsed_tokens
+
+```{r}
+#| label: "inspect_parsed_tokens"
+#| echo: true
+#| message: false
+#| warning: false
+
+head(parsed_tokens)
+
+str(parsed_tokens)
+
+```
+
+As you can see, this object is a dataframe that consists of approximately 155,000 rows where each row is a token, and each column is an annotation. For our purposes, the most relevant variables are:
+
+ - `doc_id` contains the document in which the token appeared;
+ - `token` -- contains the actual token;
+ - `lemma` -- contains the lemmatized token;
+ - `upos` -- contains the part of speech of the token, such as adjective, verb, noun, etc.;
+ - `xpos` -- contains more detailed part of speech tags in the Penn Treebank format, such as NN for noun, VB for verb, etc. Is more fine-grained than `upos`
+ 
+Let's select those variables for further analysis. 
+
+```{r}
+#| label: "select_relevant_pos_tags"
+#| echo: true
+#| message: false
+#| warning: false
+
+parsed_tokens <- parsed_tokens %>% 
+  select(doc_id, token, upos, lemma)
+
+```
+
+Inspect how many nouns appear in the corpus
+
+```{r}
+#| label: "inspect_nouns"
+#| echo: true
+#| message: false
+#| warning: false
+
+sum(parsed_tokens$upos == "NOUN")
+
+```
+
+Inspect how many verbs appear in the corpus
+
+```{r}
+#| label: "inspect_verbs"
+#| echo: true
+#| message: false
+#| warning: false
+
+sum(parsed_tokens$upos == "VERB")
+
+```
+
+Inspect how many adjectives appear in the corpus
+
+```{r}
+#| label: "inspect_adjectives"
+#| echo: true
+#| message: false
+#| warning: false
+
+sum(parsed_tokens$upos == "ADJ")
+
+```
+
+We can also inspect all different POS tags in one go. 
+
+```{r}
+#| label: "inspect_POS_tags"
+#| echo: true
+#| message: false
+#| warning: false
+
+table(parsed_tokens$upos)
+
+```
+An interesting tag is `PROPN`or proper noun that refers to the name (or part of the name) of a unique entity, be it an individual, a place, or an object. To get a feel for what entities we can filter out the proper nouns and then count and sort their lemmas using `count()` from **tidyverse**
+
+
+```{r}
+#| label: "inspect_proper_nouns"
+#| echo: true
+#| message: false
+#| warning: false
+
+propns <- parsed_tokens %>%
+  filter(upos == "PROPN")
+
+propns %>% count(lemma, sort = TRUE)
+
+```
+
+Say we are only interested in the nouns in those speeches
+```{r}
+#| label: "parse_nouns"
+#| echo: true
+#| message: false
+#| warning: false
+
+nouns <- parsed_tokens %>%
+  filter(upos == "NOUN")
+
+```
+
+Let's display their lemmas in a Wordcloud. We'll first use the `split()` function from base R to divide the nouns per speech in a list. We then use `as.tokens()` in **quanteda** to turn that list into a tokens object. We can create a `dfm` and take it from there. 
+
+```{r}
+#| label: "wordcloud_lemmas_nouns"
+#| echo: true
+#| message: false
+#| warning: false
+
+nouns_dfm <- split(nouns$lemma, nouns$doc_id) %>% 
+  as.tokens() %>% 
+  dfm() 
+
+
+textplot_wordcloud(nouns_dfm, max_words = 50)
+
+```
+
+
+Let's do the same for verbs 
+
+```{r}
+#| label: "wordcloud_lemmas_verbs"
+#| echo: true
+#| message: false
+#| warning: false
+
+verbs <- parsed_tokens %>%
+  filter(upos == "VERB")
+
+verbs_dfm <- split(verbs$lemma, verbs$doc_id) %>% 
+  as.tokens() %>% dfm()
+
+textplot_wordcloud(verbs_dfm, max_words = 50)
+
+```
+
+If we want to stitch back together the metadata to our newly created `nouns_dfm` and `verbs_dfm` we can do this as follows:
+
+```{r}
+#| label: "add_docvars_to_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+docvars(nouns_dfm) <- inaugural_speeches_df %>% 
+  select(Year, President, FirstName, Party)
+
+docvars(verbs_dfm) <- inaugural_speeches_df %>%
+  select(Year, President, FirstName, Party)
+
+```
+
+We are now in a position to inspect these dfms. For example, we may be interested in what sort of verbs distinguish Republican presidents from Democratic presidents.
+
+```{r}
+#| label: "inspect_verbs_keyness"
+#| echo: true
+#| message: false
+#| warning: false
+
+verbs_dfm_grouped <- verbs_dfm %>% 
+  dfm_group(groups = Party) %>%
+  dfm_subset(Party == "Democratic" | Party == "Republican")
+
+verb_keyness <- textstat_keyness(verbs_dfm_grouped, target = "Republican")
+
+textplot_keyness(verb_keyness,
+                 n = 10,
+                 color = c("red", "blue"))
+
+```
+Let's apply a topic model to the nouns
+
+```{r}
+#| label: "inspect_nouns_topic_model"
+#| echo: true
+#| message: false
+#| warning: false
+
+lda_10 <- textmodel_lda(nouns_dfm, 
+                       k = 10,
+                       alpha = 1,
+                       max_iter = 2000)
+
+```
+
+Let's inspect this topic model
+
+```{r}
+#| label: "inspect_LDA"
+#| echo: true
+#| message: false
+#| warning: false
+
+terms(lda_10, 10)
+
+head(lda_10$theta, 10)
+
+```
+
+## Other languages
+
+**updipe** allows you to work with pre-trained language models build for more than 65 languages 
+
+![Language models]( language_models.png ){ width=65% }
+
+
+If you want to work with these models you first need to download them. Let's say I want to work with a Dutch corpus
+
+```{r}
+#| label: "download_dutch_model"
+#| echo: true
+#| message: false
+#| warning: false
+udmodel_dutch <- udpipe_download_model(language = "dutch")
+
+str(udmodel_dutch)
+```
+
+I can now start tagging with vector of Dutch documents
+```{r}
+#| label: "parse_dutch_documents"
+#| echo: true
+#| message: false
+#| warning: false
+
+dutch_documents <- c(d1 = "AZ wordt kampioen dit jaar",
+                     d2 = "Mark Rutte, de langstzittende premier van Nederland, is de nieuwe NAVO-baas")
+
+parsed_tokens_dutch <-  udpipe(dutch_documents, udmodel_dutch) %>% 
+  as_tibble()
+
+head(parsed_tokens_dutch)
+
+```
+
+
+If I have already downloaded the a language, I can load it as follows (if the model is in the current working directory -- otherwise I will need to give it the full path to the file)
+
+```{r}
+#| label: "load_dutch_model"
+#| echo: true
+#| message: false
+#| warning: false
+
+udmodel_dutch <- udpipe_load_model(file = "dutch-alpino-ud-2.5-191206.udpipe")
+
+```
+
+## Exercises
+
+For these exercises we will work with the `parsed_tokens` dataframe that we created in the above script.
+
+1. Create a dataframe `adjs` that contains all adjectives that appear in the corpus of inaugural speeches.
+
+```{r}
+#| label: "create_adjs_dataframe"
+#| echo: true
+#| message: false
+#| warning: false
+
+```
+
+2. Display the most occurring adjectives in the inaugural speeches using `count()`
+
+```{r}
+#| label: "count_adjs"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+```
+
+3. Group the the adjectives by speech and turn them into a dataframe called `adjs_dfm`.
+
+```{r}
+#| label: "create_adjs_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+```
+
+
+4. Append Year, President, FirstName and Party from `inaugural_speeches_df`  as docvars to `adjs_dfm`
+
+```{r}
+#| label: "append_docvars_to_adjs_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+```
+
+5. Inspect `adjs_dfm` using the NRC Emotion Association Lexicon. If you don't recall how to do this, have a look back at lab session 4. Call the output of `dfm_lookuop` as `dfm_inaugural_NRC`.
+
+```{r}
+#| label: "apply_nrc_lexicon_to_adjs_dfm"
+#| echo: true
+#| message: false
+#| warning: false
+
+```
+
+
+6. Add the count of fear words as a variable `fear` to the docvars of `adjs_dfm` 
+
+```{r}
+#| label: "count_fear_words"
+#| echo: true
+#| message: false
+#| warning: false
+
+
+```
+
+**Advanced**
+
+7. Use tidyverse functions to display the mean number of fear words for Repulican and Democratic presidents  (NB: normally we would divide this number by the total number of tokens in a speech). Have a look at [this link](https://dplyr.tidyverse.org/reference/group_by.html) for more info.
+
+```{r}
+#| label: "group_by_party_mean_fear"
+#| echo: true
+#| message: false
+#| warning: false
+
+```
+
+
+8. Download a language model of your choice and inspect a vector of a few sentences using `udpipe`
+
+```{r, echo = TRUE, results = 'verbatim', message = FALSE}
+
+
+
+```
+
