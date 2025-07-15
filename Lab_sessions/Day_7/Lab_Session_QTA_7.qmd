@@ -321,8 +321,6 @@ Let's investigate if the prevalence of estimated topics is dependent on a countr
 #| message: false
 #| warning: false
 
-dfm_speeches_europe <- dfm_subset(dfm_speeches, continent == "Europe")
-table(docvars(dfm_speeches_europe, "gdp_dummy"))
 
 stm_10_metadata <- stm(dfm_speeches, 
                       data = docvars(dfm_speeches),

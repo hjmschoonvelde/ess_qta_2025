@@ -518,15 +518,6 @@ maximum number of EM (expectation maximization) steps to be no more than
 50. Still, estimating this topic model may take a few minutes.
 
 ``` r
-dfm_speeches_europe <- dfm_subset(dfm_speeches, continent == "Europe")
-table(docvars(dfm_speeches_europe, "gdp_dummy"))
-```
-
-
-     0  1 
-    32  9 
-
-``` r
 stm_10_metadata <- stm(dfm_speeches, 
                       data = docvars(dfm_speeches),
                       seed = 123,
@@ -589,33 +580,44 @@ lda_seed <- textmodel_seededlda(dfm_speeches,
 terms(lda_seed)
 ```
 
-          terrorism     environment               migration    economy     
-     [1,] "terrorism"   "sustainable_development" "migration"  "global"    
-     [2,] "state"       "agenda"                  "government" "nations"   
-     [3,] "region"      "human_rights"            "africa"     "economy"   
-     [4,] "states"      "cooperation"             "regard"     "years"     
-     [5,] "terrorist"   "implementation"          "migrants"   "government"
-     [6,] "sovereignty" "including"               "situation"  "future"    
-     [7,] "terrorists"  "important"               "republic"   "life"      
-     [8,] "military"    "secretary-general"       "social"     "lives"     
-     [9,] "conflict"    "global"                  "democracy"  "year"      
-    [10,] "war"         "national"                "commitment" "make"      
+          terrorism    environment               migration                
+     [1,] "terrorism"  "sustainable_development" "migration"              
+     [2,] "region"     "agenda"                  "government"             
+     [3,] "future"     "global"                  "state"                  
+     [4,] "states"     "human_rights"            "regard"                 
+     [5,] "terrorist"  "important"               "international_community"
+     [6,] "war"        "cooperation"             "states"                 
+     [7,] "syria"      "reform"                  "republic"               
+     [8,] "years"      "including"               "migrants"               
+     [9,] "terrorists" "secretary-general"       "africa"                 
+    [10,] "nations"    "ensure"                  "president"              
+          economy        
+     [1,] "economy"      
+     [2,] "government"   
+     [3,] "nations"      
+     [4,] "years"        
+     [5,] "caribbean"    
+     [6,] "life"         
+     [7,] "cent"         
+     [8,] "nation"       
+     [9,] "united_states"
+    [10,] "planet"       
 
 ``` r
 head(lda_seed$theta, 10)
 ```
 
-                          terrorism environment  migration   economy
-    Afghanistan          0.24762658 0.116297468 0.14319620 0.4928797
-    Angola               0.06672026 0.396302251 0.37057878 0.1663987
-    Albania              0.17711370 0.306851312 0.12609329 0.3899417
-    Andorra              0.03682896 0.462546816 0.19662921 0.3039950
-    United Arab Emirates 0.56102117 0.178704857 0.13387298 0.1264010
-    Argentina            0.05025445 0.253816794 0.31870229 0.3772265
-    Armenia              0.32374768 0.190166976 0.33487941 0.1512059
-    Antigua & Barbuda    0.03112583 0.001986755 0.12516556 0.8417219
-    Australia            0.26147541 0.454918033 0.01065574 0.2729508
-    Austria              0.42841163 0.233780761 0.16442953 0.1733781
+                          terrorism  environment  migration    economy
+    Afghanistan          0.34572785 0.2713607595 0.09572785 0.28718354
+    Angola               0.09405145 0.4075562701 0.37379421 0.12459807
+    Albania              0.32434402 0.3505830904 0.08090379 0.24416910
+    Andorra              0.11048689 0.5387016230 0.14044944 0.21036205
+    United Arab Emirates 0.47135741 0.1637608966 0.30323786 0.06164384
+    Argentina            0.05407125 0.3606870229 0.28307888 0.30216285
+    Armenia              0.33487941 0.1326530612 0.38497217 0.14749536
+    Antigua & Barbuda    0.07615894 0.0006622517 0.09072848 0.83245033
+    Australia            0.34836066 0.5204918033 0.01065574 0.12049180
+    Austria              0.55592841 0.2516778523 0.15995526 0.03243848
 
 The `seededlda()` package also allows for unseeded topics. If we want to
 include 6 unseeded topics, we add the argument `residual = 6`
@@ -631,77 +633,77 @@ lda_seed_res <- textmodel_seededlda(dfm_speeches,
 terms(lda_seed_res)
 ```
 
-          terrorism                 environment               migration         
-     [1,] "terrorism"               "sustainable_development" "migration"       
-     [2,] "region"                  "agenda"                  "migrants"        
-     [3,] "state"                   "global"                  "global"          
-     [4,] "states"                  "implementation"          "shared"          
-     [5,] "terrorist"               "human_rights"            "history"         
-     [6,] "iraq"                    "commitment"              "education"       
-     [7,] "international_community" "cooperation"             "address"         
-     [8,] "terrorists"              "secretary-general"       "institutions"    
-     [9,] "stability"               "paris_agreement"         "security_council"
-    [10,] "regional"                "action"                  "refugee"         
-          economy                other1          other2             other3      
-     [1,] "economy"              "dialogue"      "africa"           "government"
-     [2,] "government"           "peoples"       "republic"         "national"  
-     [3,] "caribbean"            "states"        "regard"           "president" 
-     [4,] "cent"                 "president"     "organization"     "women"     
-     [5,] "economic_growth"      "united_states" "african"          "regard"    
-     [6,] "economies"            "humankind"     "african_union"    "poverty"   
-     [7,] "mexico"               "democracy"     "security_council" "democracy" 
-     [8,] "economic_development" "respect"       "express"          "social"    
-     [9,] "united_states"        "based"         "situation"        "working"   
-    [10,] "years"                "promote"       "mali"             "committed" 
-          other4      other5               other6         
-     [1,] "important" "nations"            "nations"      
-     [2,] "future"    "theme"              "north_korea"  
-     [3,] "reform"    "life"               "years"        
-     [4,] "rights"    "leadership"         "nuclear"      
-     [5,] "states"    "planet"             "iran"         
-     [6,] "make"      "sustainable"        "power"        
-     [7,] "part"      "sustainable_planet" "hope"         
-     [8,] "common"    "focus"              "change"       
-     [9,] "effective" "human"              "united_states"
-    [10,] "goal"      "action"             "israel"       
+          terrorism    environment               migration                
+     [1,] "terrorism"  "sustainable_development" "migration"              
+     [2,] "state"      "agenda"                  "africa"                 
+     [3,] "terrorist"  "human_rights"            "migrants"               
+     [4,] "terrorists" "implementation"          "international_community"
+     [5,] "israel"     "action"                  "organization"           
+     [6,] "region"     "commitment"              "call"                   
+     [7,] "iraq"       "including"               "regard"                 
+     [8,] "iran"       "women"                   "opportunity"            
+     [9,] "government" "important"               "african"                
+    [10,] "yemen"      "achieve"                 "african_union"          
+          economy                other1             other2       other3        
+     [1,] "economy"              "global"           "government" "states"      
+     [2,] "government"           "security_council" "solidarity" "region"      
+     [3,] "cent"                 "north_korea"      "situation"  "based"       
+     [4,] "social"               "conflict"         "state"      "principles"  
+     [5,] "economic_growth"      "multilateralism"  "republic"   "dialogue"    
+     [6,] "economies"            "nuclear"          "resources"  "important"   
+     [7,] "global"               "korea"            "agreement"  "rights"      
+     [8,] "economic_development" "organization"     "dialogue"   "human_rights"
+     [9,] "human"                "make"             "justice"    "problems"    
+    [10,] "poverty"              "conflicts"        "public"     "social"      
+          other4    other5          other6       
+     [1,] "nations" "caribbean"     "global"     
+     [2,] "future"  "united_states" "years"      
+     [3,] "years"   "peoples"       "president"  
+     [4,] "nation"  "pacific"       "year"       
+     [5,] "build"   "cuba"          "ukraine"    
+     [6,] "life"    "small"         "committed"  
+     [7,] "war"     "ocean"         "cooperation"
+     [8,] "history" "mexico"        "azerbaijan" 
+     [9,] "make"    "year"          "regional"   
+    [10,] "great"   "islands"       "reform"     
 
 ``` r
 head(lda_seed_res$theta, 10)
 ```
 
-                           terrorism  environment  migration    economy      other1
-    Afghanistan          0.100000000 0.0401574803 0.14566929 0.07165354 0.007086614
-    Angola               0.053600000 0.2008000000 0.03920000 0.07440000 0.087200000
-    Albania              0.057329463 0.0457184325 0.16908563 0.05007257 0.050072569
-    Andorra              0.019278607 0.2431592040 0.16480100 0.05410448 0.091417910
-    United Arab Emirates 0.537841191 0.0477667494 0.05645161 0.03411911 0.034119107
-    Argentina            0.046261090 0.3149556401 0.04499366 0.11723701 0.141318124
-    Armenia              0.255535055 0.0046125461 0.02859779 0.03044280 0.032287823
-    Antigua & Barbuda    0.001978892 0.0006596306 0.01912929 0.74340369 0.038918206
-    Australia            0.106851550 0.1378466558 0.20636215 0.01712887 0.012234910
-    Austria              0.207777778 0.1033333333 0.33222222 0.01000000 0.043333333
-                               other2       other3     other4      other5
-    Afghanistan          0.0039370079 0.1818897638 0.27165354 0.084251969
-    Angola               0.2744000000 0.1368000000 0.03760000 0.087200000
-    Albania              0.0558780842 0.1618287373 0.34034833 0.061683599
-    Andorra              0.0254975124 0.1050995025 0.19465174 0.098880597
-    United Arab Emirates 0.0192307692 0.0614143921 0.04528536 0.070099256
-    Argentina            0.0475285171 0.1324461343 0.06147022 0.053865653
-    Armenia              0.1153136531 0.1466789668 0.20018450 0.181734317
-    Antigua & Barbuda    0.0006596306 0.0006596306 0.04947230 0.086411609
-    Australia            0.0008156607 0.0856443719 0.16068515 0.059543230
-    Austria              0.0322222222 0.0544444444 0.12111111 0.005555556
-                              other6
-    Afghanistan          0.093700787
-    Angola               0.008800000
-    Albania              0.007982583
-    Andorra              0.003109453
-    United Arab Emirates 0.093672457
-    Argentina            0.039923954
-    Armenia              0.004612546
-    Antigua & Barbuda    0.058707124
-    Australia            0.212887439
-    Austria              0.090000000
+                            terrorism environment    migration      economy
+    Afghanistan          0.1299212598 0.063779528 0.0165354331 0.1346456693
+    Angola               0.0120000000 0.208800000 0.3336000000 0.1240000000
+    Albania              0.0166908563 0.161828737 0.0036284470 0.1415094340
+    Andorra              0.0055970149 0.373756219 0.0068407960 0.0764925373
+    United Arab Emirates 0.4485111663 0.127171216 0.1048387097 0.0390818859
+    Argentina            0.0272496831 0.299746515 0.0107731305 0.1045627376
+    Armenia              0.0876383764 0.087638376 0.1171586716 0.0009225092
+    Antigua & Barbuda    0.0006596306 0.001978892 0.0006596306 0.2790237467
+    Australia            0.0497553018 0.111745514 0.0057096248 0.0823817292
+    Austria              0.0988888889 0.003333333 0.1055555556 0.0033333333
+                               other1      other2     other3     other4
+    Afghanistan          0.0748031496 0.013385827 0.01653543 0.30000000
+    Angola               0.0344000000 0.052000000 0.14320000 0.00080000
+    Albania              0.0892597968 0.026850508 0.33599419 0.20101597
+    Andorra              0.0876865672 0.097636816 0.22325871 0.07773632
+    United Arab Emirates 0.0465260546 0.004342432 0.14330025 0.08374690
+    Argentina            0.0209125475 0.266793409 0.03865653 0.13751584
+    Armenia              0.0009225092 0.194649446 0.17250923 0.12269373
+    Antigua & Barbuda    0.0006596306 0.029683377 0.04155673 0.15765172
+    Australia            0.4820554649 0.004078303 0.03833605 0.16068515
+    Austria              0.4122222222 0.065555556 0.15222222 0.01888889
+                               other5      other6
+    Afghanistan          0.0023622047 0.248031496
+    Angola               0.0568000000 0.034400000
+    Albania              0.0123367199 0.010885341
+    Andorra              0.0230099502 0.027985075
+    United Arab Emirates 0.0006203474 0.001861042
+    Argentina            0.0551330798 0.038656527
+    Armenia              0.0009225092 0.214944649
+    Antigua & Barbuda    0.4755936675 0.012532982
+    Australia            0.0024469821 0.062805873
+    Austria              0.0188888889 0.121111111
 
 ## Exercises
 
