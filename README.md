@@ -42,7 +42,7 @@ On the first day of the course we will have a short R crash course. Please conta
 | July  15   | [.md]( Lab_sessions/Day_7/Lab_Session_QTA_7.md ) [.qmd]( Lab_sessions/Day_7/Lab_Session_QTA_7.qmd )  | [.md]( Lab_sessions/Day_7/Lab_Session_QTA_7_Answers.md ) [.qmd]( Lab_sessions/Day_7/Lab_Session_QTA_7_Answers.qmd ) |
 | July  16   | [.md]( Lab_sessions/Day_8/Lab_Session_QTA_8.md ) [.qmd]( Lab_sessions/Day_8/Lab_Session_QTA_8.qmd ) | [.md]( Lab_sessions/Day_8/Lab_Session_QTA_8_Answers.md ) [.qmd]( Lab_sessions/Day_8/Lab_Session_QTA_8_Answers.qmd ) |
 | July  17   | [.md]( Lab_sessions/Day_9/Lab_Session_QTA_9.md ) [.qmd]( Lab_sessions/Day_9/Lab_Session_QTA_9.qmd ) | [.md]( Lab_sessions/Day_9/Lab_Session_QTA_9_Answers.md ) [.qmd]( Lab_sessions/Day_9/Lab_Session_QTA_9_Answers.qmd ) |
-| July  18   | [](  ) [](  )  | [](  ) []( ) |
+| July  18   | [](  ) [.qmd]( Lab_sessions/Day_9/Lab_Session_QTA_9.qmd )  | [](  ) []( ) |
 
 <!-- ## Flash talks
 
@@ -146,7 +146,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 *Day 9 - July 17*
 
--	**Lecture**: New developments in supervised machine learning: Deep learning. Transfer Learning. 
+-	**Lecture**: New developments in supervised machine learning. Weak supervision. Transfer learning. 
 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
