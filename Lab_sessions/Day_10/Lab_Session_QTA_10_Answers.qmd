@@ -1,0 +1,325 @@
+---
+title: "QTA lab Session 10: LLMs"
+format: 
+  #html: default
+  gfm: default
+editor: source
+
+---
+
+This lab session is a bit experimental in the sense that you will need to do some installation steps before you can run the code. It would also require you to download an LLM on your computer which can take some time depending on your internet connection. If you are not able to run this lab session, you can still follow along with the code and the explanations.
+
+In a first step you will need to install Ollama. Ollama is a tool that allows you to run LLMs locally on your machine. You can find the installation instructions on the [Ollama website](https://ollama.com/). If you run LLMs locally on your machine, you will not need an internet connection to use them, and you don't have to worry about sensitive data leaving your computer. However, you will need to have a machine with sufficient resources (RAM and CPU) to run the models.
+
+**NB**: We could also have accessed models using an API (e.g., OpenAI, Anthropic). Although these offer state of the art models, you would have to pay for the API usage. Running LLMs locally is a great way to experiment with them without having to worry about costs or data privacy. It is also useful for purposes of (academic) reproducibility, as you can ensure that the same model is used for all analyses.
+
+Then, in a next step you will need to install the `ellmer` package. The `ellmer` package is an R package from the tidyverse developers that provides an interface to Ollama and allows you to use LLMs in R. To install models from `ollama` we can use the `ollamar` package. `quanteda.llm` is the package that provides the interface to use LLMs in `quanteda`; we'll also install `quanteda.tidy`. 
+
+`ellmer` and `ollamar` can be installed from CRAN using the `install.packages()` function. In order to install the `quanteda.llm` and `quanteda.tidy` packages, you can use the `pak` package. If you don't have `pak` installed, you can install it using the `install.packages("pak")` command.
+
+A few disclaimers before we begin:
+
+**Keep in mind that quanteda.llm, ellmer and other packages are under active development, so the functions and their arguments are likely to change.**
+
+**In what follows, we'll use some toy examples, and you will notice that not all results make much sense. In a research project we will need to think harder about our prompts and what models to choose.**
+
+
+```{r}
+#| label: "load_libraries"
+#| echo: true
+#| message: false
+#| warning: false
+
+# install.packages("pak")
+#pak::pak("quanteda/quanteda.llm")
+#pak::pak("quanteda/quanteda.tidy")
+
+
+library(quanteda.llm)
+library(quanteda.tidy)
+library(quanteda.corpora)
+library(quanteda)
+library(tidyverse)
+library(ellmer)
+library(ollamar)
+library(knitr)
+library(kableExtra)
+
+
+```
+
+
+Once we have installed Ollama we can load the LLMs we want to use. In this lab session, we will use the `llama3.2` model and the `deepseek-r1` model. You can load these models using the `ollamar::ollama_load()` function. Keep in mind that this can take some time depending on your internet connection and the size of the model. If you have already downloaded the models, you can skip this step. On ollama.com/search you can find a list of available models (as well as their sizes). 
+
+**NOTE**: Llama3.2 is about 2.0 GB and Deepseek is about 5.2 GB.
+
+```{r}
+#| label: "load_models"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+
+#ollamar::pull("llama3.2")
+#ollamar::pull("deepseek-r1:latest")
+
+```
+
+If you want to inspect which models are available on your machine, you can use the ``ellmer::models_ollama()`` function. 
+
+For these examples, we will use the corpus `data_corpus_ungd2017` which contains the speeches from the UN General Assembly in 2017 and is available in **quanteda.corpora**. 
+
+```{r}
+#| label: "corpus_speeches"
+#| echo: true
+#| message: false
+#| warning: false
+
+corpus_speeches <- data_corpus_ungd2017
+
+summary(corpus_speeches, n = 10)
+
+```
+
+Remember that in the lab session on topic models we established that the speeches by Japan and North Korea scored high on a nuclear weapons topic. Let's see if we can reproduce this finding using LLMs. We'll first subset the corpus so that it only contains speeches from Japan and North Korea. 
+
+
+```{r}
+#| label: "subset_corpus"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+#| results: hide
+
+corpus_speeches <- corpus_subset(corpus_speeches, country %in% c("Japan", "North Korea"))
+
+```
+
+Let's first inspect the `ai_summary()` function which is used to summarize a text using an LLM. The `ai_summary()` function takes a text as input and returns a summary of the text. The `chat_fn` argument specifies which chat function from the `ellmer` package to use, which in this case is `chat_ollama`. The `model` argument specifies the model to use, which in this case is `llama3.2`.
+
+```{r}
+#| label: "ai_summary_inspect"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+#| results: hide
+
+
+corpus_speeches <- corpus_speeches %>%
+  mutate(ai_summary(text, 
+                    chat_fn = chat_ollama, 
+                    model = "llama3.2"))
+
+
+```
+
+The `ai_summary()` function will return a summary of the text in the docvars that is titled `summary`. We'll rename this column to `ai_summary_llama` for clarity.
+
+```{r}
+#| label: "rename_summarize"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+#| results: hide
+
+
+glimpse(corpus_speeches)
+
+docvars(corpus_speeches) <- rename(docvars(corpus_speeches), ai_summary_llama = summary)
+
+```
+
+Now we can inspect the summaries of the speeches. We can use the `select()` function to select the columns we want to display. In this case, we will select the `country`, `ai_summary_llama` columns. We will also use the `kable()` function from the `knitr` package to create a table and the `kable_styling()` function from the `kableExtra` package to style the table.
+
+```{r}
+#| label: "display_summarize"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+#| results: hide
+
+
+docvars(corpus_speeches) %>%
+  select(country, ai_summary_llama) %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "left", html_font = "Arial") %>%
+  column_spec(1, bold = T) %>%
+  column_spec(2, width = "50em") 
+
+```
+
+Let's do the same but this time we'll try out the `deepseek-r1` model. 
+
+```{r}
+#| label: "deepseek_summarize"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+
+corpus_speeches <- corpus_speeches %>%
+  mutate(ai_summary(text, 
+                      chat_fn = chat_ollama, 
+                      system_prompt = prompt,
+                      model = "deepseek-r1"))
+
+docvars(corpus_speeches) <- rename(docvars(corpus_speeches), ai_summary_deepseek = summary)
+
+```
+
+Let's compare the summaries from both models
+
+```{r}
+#| label: "compare_summarize"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+
+docvars(corpus_speeches) %>%
+  select(country, ai_summary_llama, ai_summary_deepseek) %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "left", html_font = "Arial") %>%
+  column_spec(1, bold = T) %>%
+  column_spec(2, width = "50em") %>%
+  column_spec(3, width = "50em")
+
+```
+
+**Question**: Do you see any differences in the summaries? Which model do you think provides a better summary? Why?
+
+In a next step, we'll try to obtain a score for the speeches using the `ai_score()` function. The `ai_score()` function takes a text as input and returns a score for the text. The `chat_fn` argument specifies which chat function from the `ellmer` package to use, which in this case is `chat_ollama`. The `scale` argument specifies the scale to use for the scoring, which in this case is a 5-point scale. The `model` argument specifies the model to use, which in this case is `llama3.2`.
+
+
+```{r}
+#| label: "score_prompt_llama"
+#| echo: true
+#| message: true
+#| warning: true
+#| eval: true
+
+
+
+prompt <- "You are analyzing the emotional tone of a speech. Focus on how positive or negative the overall message is in terms of outlook, sentiment, and future expectations.\nRate the speech on a 5-point scale:\n1 = Very pessimistic;\n2 = Moderately pessimistic;\n3 = Neutral tone;\n4 = Moderately optimistic;\n5 = Very optimistic.\nReturn only the numeric score from 1 to 5, based on your evaluation."
+
+corpus_speeches <- corpus_speeches %>%
+  mutate(ai_score(text, 
+                  chat_fn = chat_ollama, 
+                  prompt, model = "llama3.2"))
+
+docvars(corpus_speeches) <- rename(docvars(corpus_speeches), ai_score_llama = score, evidence_llama = evidence)
+
+```
+
+We'll do the same for the `deepseek-r1` model. 
+
+```{r}
+#| label: "score_prompt_deepseek"
+#| echo: true
+#| message: true
+#| warning: true
+#| eval: true
+
+
+corpus_speeches <- corpus_speeches %>%
+  mutate(ai_score(text, 
+                  chat_fn = chat_ollama, 
+                  prompt, model = "deepseek-r1"))
+
+docvars(corpus_speeches) <- rename(docvars(corpus_speeches), ai_score_deepseek = score, evidence_deepseek = evidence)
+
+```
+
+Let's compare the scores from both models. 
+
+```{r}
+#| label: "compare_scores"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+#| results: hide
+
+docvars(corpus_speeches) %>%
+  select(country, ai_score_llama, ai_score_deepseek) %>%
+  kable() %>%
+  kable_styling(full_width = F, position = "left", html_font = "Arial") %>%
+  column_spec(1, bold = T) %>%
+  column_spec(2, width = "50em") %>%
+  column_spec(3, width = "50em")
+
+```
+
+**Question**: Do you see any differences in the scores? Which model do you think provides a better score? Why?
+
+In a next step we'll use `ai_salience()` to obtain the salience of specific topics in each speech. We'll choose as topics "nuclear weapons".
+```{r}
+#| label: "salience_prompt"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+
+topics <- c("nuclear weapons", "environment", "human rights")
+
+salience_result_llama <- corpus_speeches %>%
+ mutate(ai_salience(as.character(corpus_speeches), 
+                    topics,
+                    chat_fn = chat_ollama, 
+                    model = "deepseek-r1",")
+
+```
+
+
+In a final step, we'll use `ai_text()` to obtain the score both speeches based on a prompt that asks for a score on how much the speech aligns with the values and principles of the United Nations. The `ai_text()` function takes a text as input and returns a score for the text.
+
+```{r}
+#| label: "ai_text_prompt"
+#| echo: true
+#| message: false
+#| warning: false
+#| eval: false
+#| results: hide
+
+
+prompt <- "Score the following document on a scale of how much it aligns with the United Nations.The scale is from 1 to 5, where:
+
+1: Does not align at all with the UN's values and principles  
+2: Aligns very little with the UN's values and principles  
+3: Aligns somewhat with the UN's values and principles  
+4: Aligns well with the UN's values and principles  
+5: Fully aligns with the UN's values and principles  
+
+CRITERIA FOR EVALUATION:
+- Support for international cooperation and multilateralism  
+- Respect for international law and the UN Charter  
+- Commitment to peace, security, human rights, and sustainable development  
+- Tone and framing toward the legitimacy of the United Nations and its institutions  
+- Language reflecting global solidarity or shared responsibility
+
+Please provide a single score from 1 to 5 and briefly justify your decision based on the document's content.
+"
+
+# define the structure of the response
+
+policy_scores <- type_object(
+  score = type_integer(),
+  evidence = type_string()
+)
+
+result <- ai_text(corpus_speeches, 
+                  chat_fn = chat_ollama,
+                  model = "llama3.2", 
+                  type_object = policy_scores,
+                  system_prompt = prompt) 
+
+```
+
+
+## Exercises
+
+Try this out yourself!
