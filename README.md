@@ -146,7 +146,7 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 *Day 9 - July 17*
 
--	**Lecture**: Deep learning. Transfer Learning. 
+-	**Lecture**: New developments in supervised machine learning: Deep learning. Transfer Learning. 
 
 -	**Lab**: Training a word embeddings model and inspecting document vectors using **text2vec** (Selivanov _et al_ 2022)
 
