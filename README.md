@@ -26,7 +26,7 @@ On the first day of the course we will have a short R crash course. Please conta
 | July  8   | [.pdf]( Slides/Slides_QTA_2.pdf)| July  15   |[.pdf]( Slides/Slides_QTA_7.pdf)  |
 | July  9   | [.pdf]( Slides/Slides_QTA_3.pdf) | July 16  | [.pdf]( Slides/Slides_QTA_8.pdf) |
 | July  10  | [.pdf]( Slides/Slides_QTA_4.pdf)| July  17   |[.pdf]( Slides/Slides_QTA_9.pdf) |
-| July  11  | [.pdf]( Slides/Slides_QTA_5.pdf) | July 18 | |
+| July  11  | [.pdf]( Slides/Slides_QTA_5.pdf) | July 18 | [.pdf]( Slides/Slides_QTA_10.pdf)|
 
 
 ## Lab Sessions
@@ -158,11 +158,11 @@ I thank Stefan Müller for sharing his lab session materials for his QTA course 
 
 -	**Lecture**: LLMs. Concluding remarks 
 
--	**Lab**: Practice with LLMs using the **quanteda.llm** (Maerz and Benoit, 2025), **ellmer** (Wickham et al. 2025), and the **ollamar** (Lin & Safi, 2025) packages.
+-	**Lab**: Explore working with LLMs using the **quanteda.llm** (Maerz and Benoit, 2025), **ellmer** (Wickham et al. 2025), and the **ollamar** (Lin & Safi, 2025) packages.
 
 - **Readings**:
    - Bail, C.A., (2024). Can Generative AI improve social science? Proceedings of the National Academy of Sciences, 121(21) p.e2314021121.
-   - Gruber, J.B. & Votta F. (2025). Large Language Models. In: Nai, A., Gr¨omping, M., & Wirz, D. (Eds). Elgar Encyclopedia of Political Communication. Edward Elgar Publishing.
+   - Gruber, J.B. & Votta F. (2025). Large Language Models. In: Nai, A., Grömping, M., & Wirz, D. (Eds). Elgar Encyclopedia of Political Communication. Edward Elgar Publishing.
    - Laurer, M., van Atteveldt, W., Casas, A., & Welbers, K. (2025). On measurement validity and language models: Increasing validity and decreasing bias with instructions. Communication Methods and Measures 19(1), pp 46–62.
 
 
