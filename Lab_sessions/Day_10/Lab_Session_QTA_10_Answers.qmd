@@ -30,7 +30,7 @@ A few disclaimers before we begin:
 #| message: false
 #| warning: false
 
-# install.packages("pak")
+#install.packages("pak")
 #pak::pak("quanteda/quanteda.llm")
 #pak::pak("quanteda/quanteda.tidy")
 
@@ -59,6 +59,7 @@ Once we have installed Ollama we can load the LLMs we want to use. In this lab s
 #| message: false
 #| warning: false
 #| eval: false
+
 
 #ollamar::pull("llama3.2")
 #ollamar::pull("deepseek-r1:latest")
@@ -164,7 +165,6 @@ Let's do the same but this time we'll try out the `deepseek-r1` model.
 corpus_speeches <- corpus_speeches %>%
   mutate(ai_summary(text, 
                       chat_fn = chat_ollama, 
-                      system_prompt = prompt,
                       model = "deepseek-r1"))
 
 docvars(corpus_speeches) <- rename(docvars(corpus_speeches), ai_summary_deepseek = summary)
@@ -267,10 +267,10 @@ In a next step we'll use `ai_salience()` to obtain the salience of specific topi
 topics <- c("nuclear weapons", "environment", "human rights")
 
 salience_result_llama <- corpus_speeches %>%
- mutate(ai_salience(as.character(corpus_speeches), 
+  mutate(ai_salience(as.character(corpus_speeches), 
                     topics,
                     chat_fn = chat_ollama, 
-                    model = "deepseek-r1",")
+                    model = "deepseek-r1"))
 
 ```
 
